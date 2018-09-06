@@ -6,16 +6,10 @@
   "scripts": {
     "test": "mocha --require babel-core/register --exit",
     "dev": "nodemon ./app.js --exec babel-node",
-    "start": "nodemon ./app.js --exec babel-node"
+    "start": "npm i -g babel-cli && nodemon ./app.js --exec babel-node"
   },
   "keywords": [],
   "dependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^8.2.6",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-2": "^6.24.1",
     "bcrypt": "^3.0.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
@@ -29,6 +23,7 @@
     "@types/express": "^4.16.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.6",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-2": "^6.24.1",
     "chai": "^4.1.2",
