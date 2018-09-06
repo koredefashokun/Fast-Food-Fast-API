@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha --require babel-core/register --exit",
     "dev": "nodemon ./app.js --exec babel-node",
-    "start": "npm i -g babel-cli && nodemon ./app.js --exec babel-node"
+    "start": "nodemon ./app.js --exec babel-node"
   },
   "keywords": [],
   "dependencies": {
