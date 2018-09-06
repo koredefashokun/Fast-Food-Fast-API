@@ -6,9 +6,8 @@
   "scripts": {
     "test": "mocha --require babel-core/register --exit",
     "dev": "nodemon ./app.js --exec babel-node",
-    "build": "./node_modules/.bin/babel . --out-dir lib",
-    "start": "node lib/app.js",
-    "heroku-postbuild": "npm run build"
+    "build": "babel . -d lib",
+    "start": "npm run build && node lib/app.js"
   },
   "keywords": [],
   "dependencies": {
