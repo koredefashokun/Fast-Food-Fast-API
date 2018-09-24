@@ -86,3 +86,9 @@ Sample response:
   }
 }
 ```
+
+## License
+MIT License
+
+## Author
+Oluwakorede Fashokun
