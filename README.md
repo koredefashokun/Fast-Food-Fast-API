@@ -50,3 +50,39 @@ Sample response:
   }
 }
 ```
+
+#### GET /orders/:orderId
+Function: Gets the order associated with the given id.
+Sample response:
+```json
+{
+  "success": true,
+  "order": {
+    "id": 4,
+    "item": "Large Cheeseburger",
+    "quantity": 2,
+    "completed": true
+  }
+}
+```
+
+#### PUT /orders/:orderId
+Function: Updates the status of an order
+Sample request:
+```json
+{
+  "completed": true
+}
+```
+Sample response:
+```json
+{
+  "success": true,
+  "order": {
+    "id": 2,
+    "item": "Chicken wings",
+    "quantity": 4,
+    "completed": true
+  }
+}
+```
