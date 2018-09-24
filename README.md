@@ -7,7 +7,7 @@ API for Fast-Food-Fast, a service for ordering food.
 ### v1
 
 #### GET /orders
-Fetches a list of orders from the database.
+Function: Fetches a list of orders from the database.
 Sample response:
 ```json
 {
@@ -29,3 +29,24 @@ Sample response:
 }
 ```
 
+#### POST /orders
+Function: Creates a new order, and adds it to the database.
+Sample request:
+```json
+{
+  "item": "Fried Rice and Chicken",
+  "quantity": 3
+}
+```
+Sample response:
+```json
+{
+  "success": true,
+  "order": {
+    "id": 1,
+    "item": "Fried Rice and Chicken",
+    "quantity": 3,
+    "completed": false
+  }
+}
+```
