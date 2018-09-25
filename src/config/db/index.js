@@ -3,7 +3,6 @@ import { Pool } from 'pg';
 
 const pool = new Pool();
 
-pool.connect();
 
 const db = {
   query: async (string, params) => {
