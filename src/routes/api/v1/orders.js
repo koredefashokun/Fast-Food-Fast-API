@@ -16,15 +16,16 @@ function containsObject(obj, list) {
 }
 
 router.get('/', async (req, res) => {
-  let orders = [];
-  const query = await db.query('SELECT * FROM orders ORDER BY order_id ASC');
-  await query.on('row', async order => {
-    await orders.push(order);
-  });
-  res.status(200).json({
-    success: true,
-    orders
-  });
+  // let orders = [];
+  // const query = await db.query('SELECT * FROM orders ORDER BY order_id ASC');
+  // await query.on('row', async order => {
+  //   await orders.push(order);
+  // });
+  // res.status(200).json({
+  //   success: true,
+  //   orders
+  // });
+  const orders = await database.orders;
   if (!orders) {
     res.status(400).json({
       success: false,
