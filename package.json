@@ -1,12 +1,20 @@
 {
   "name": "fast-food-fast-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "description": "Simple food ordering app.",
+  "main": "src/app.js",
   "scripts": {
-    "test": "mocha --require babel-core/register --exit",
-    "dev": "nodemon ./app.js --exec babel-node",
-    "start": "npm i -g nodemon && nodemon ./app.js --exec babel-node"
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "build": "babel src -d dist --source-maps",
+    "test": "nyc --reporter=lcov --reporter=text mocha --require babel-core/register --exit",
+    "dev": "nodemon ./src/app.js --exec babel-node",
+    "heroku-postbuild": "npm run build",
+    "start": "node dist/app"
+  },
+  "nyc": {
+    "require": [
+      "babel-core/register"
+    ]
   },
   "keywords": [],
   "dependencies": {
@@ -16,14 +24,16 @@
     "dotenv": "^2.0.0",
     "express": "^4.16.3",
     "mongoose": "^5.2.10",
-    "nodemailer": "^4.6.8"
+    "nodemailer": "^4.6.8",
+    "pg": "^7.4.3",
+    "pg-promise": "^8.4.6"
   },
   "devDependencies": {
     "@types/bcrypt": "^2.0.0",
     "@types/express": "^4.16.0",
+    "babel-cli": "6.5.1",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.6",
-    "babel-cli": "6.5.1",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-2": "^6.24.1",
@@ -32,6 +42,8 @@
     "coveralls": "^3.0.2",
     "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
+    "morgan": "^1.9.1",
+    "nyc": "^13.0.1",
     "rimraf": "^2.6.2"
   },
   "author": "Oluwakorede Fashokun <koredefashokun@gmail.com>",
