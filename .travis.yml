@@ -11,6 +11,4 @@ jobs:
     - stage: Test with Mocha
       script:
         - npm test
-    - stage: Report Code Coverage
-      script:
-        - npm run coverage
+after_success: npm run coverage
