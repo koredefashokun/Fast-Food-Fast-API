@@ -1,5 +1,5 @@
 # Fast-Food-Fast-API
-[![Build Status](https://travis-ci.org/korede360/Fast-Food-Fast-API.svg?branch=staging)](https://travis-ci.org/korede360/Fast-Food-Fast-API) [![codecov](https://codecov.io/gh/korede360/Fast-Food-Fast-API/branch/master/graph/badge.svg)](https://codecov.io/gh/korede360/Fast-Food-Fast-API)
+[![Build Status](https://travis-ci.org/korede360/Fast-Food-Fast-API.svg?branch=staging)](https://travis-ci.org/korede360/Fast-Food-Fast-API) [![codecov](https://codecov.io/gh/korede360/Fast-Food-Fast-API/branch/develop/graph/badge.svg)](https://codecov.io/gh/korede360/Fast-Food-Fast-API)
 ## Description
 Fast-Food-Fast is a service for ordering food.
 
