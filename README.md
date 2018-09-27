@@ -5,24 +5,7 @@ Fast-Food-Fast is a service for ordering food.
 
 ## Features
 
-## Installation and Setup
-To install the app simply run:
-```sh
-git clone https://github.com/korede360/Fast-Food-Fast-API.git
-cd Fast-Food-Fast-API
-npm install
-```
-Then, create a .env file in the root of your project, with the following details:
-```
-DB_URI='url/to/postgres/database'
-```
-Where '/url/to/postgres/database' is replaced with the actual URL to your PostgresQL database.
-## Tests
-  - All tests were written Mocha and Chai
-  - Tests can be run by running `npm test` in the terminal
-
-## Routes
-### v1
+### Routes
 
 #### GET /orders
 Function: Fetches a list of orders from the database.
@@ -104,6 +87,22 @@ Sample response:
   }
 }
 ```
+
+## Installation and Setup
+To install the app simply run:
+```sh
+git clone https://github.com/korede360/Fast-Food-Fast-API.git
+cd Fast-Food-Fast-API
+npm install
+```
+Then, create a .env file in the root of your project, with the following details:
+```
+DATABASE_URL='url/to/postgres/database'
+```
+Where '/url/to/postgres/database' is replaced with the actual URL to your PostgresQL database.
+## Tests
+  - All tests were written Mocha and Chai
+  - Tests can be run by running `npm test` in the terminal
 
 ## License
 MIT License
