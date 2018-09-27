@@ -8,7 +8,7 @@ const auth = async (req, res, next) => {
       message: 'No token provided!'
     });
   }
-  let realToken = await token.replace('Bearer ', '');
+  let realToken = await token.split(' ')[1];
   if (realToken) {
     const decoded = await jwt.verify(realToken, process.env.SECRET);
     if (!decoded) {
