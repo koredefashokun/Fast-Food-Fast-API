@@ -1,24 +1,34 @@
+* {
+  font-family: Dank Mono;
+}
+button:hover {
+  cursor: pointer;
+}
 .order-food-container {
   align-items: center;
-  height: 100vh;
-  width: 80vw;
+  height: 100%;
+  width: 100%;
   overflow-y: scroll;
 }
 .order-food-container .order-food-item {
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: 80%;
   height: 50%;
   background-color: #FFFFFF;
   margin-top: 10px;
+  border: 0.05px solid #D3D3D3;
 }
 .order-food-container .order-food-item .order-food-item-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 50%;
   height: 100%;
 }
 .order-food-container .order-food-item .order-food-item-image img {
-  height: 100%;
-  width: 100%;
+  height: 80%;
+  width: 80%;
 }
 .order-food-container .order-food-item .order-food-item-description {
   width: 50%;
@@ -30,6 +40,7 @@
 }
 .order-food-container .order-food-item .order-food-item-description p {
   font-family: Dank Mono;
+  width: 90%;
 }
 .order-food-container .order-food-item .order-food-item-description button {
   font-family: Dank Mono;
@@ -51,4 +62,44 @@
 }
 .order-food-name {
   font-size: 30px;
+}
+.modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.1);
+  transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+}
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 1rem 1.5rem;
+  width: 50vw;
+  border-radius: 2px;
+}
+.close-button {
+  float: right;
+  width: 1.5rem;
+  line-height: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  background-color: lightgray;
+}
+.close-button:hover {
+  background-color: darkgray;
+}
+.show-modal {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1.0);
+  transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }

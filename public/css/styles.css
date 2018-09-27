@@ -7,6 +7,34 @@
 *:focus {
   outline: none;
 }
+a:visited {
+  color: #000000;
+}
+.top-bar {
+  width: 90%;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 20px;
+}
+.top-bar .nav-links {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 250px;
+}
+.top-bar .nav-links a {
+  text-decoration: none;
+  color: #000000;
+}
+.top-bar .nav-links a:hover {
+  text-decoration: underline;
+  text-decoration-color: #000000;
+  cursor: pointer;
+}
 button:hover {
   cursor: pointer;
 }
@@ -17,13 +45,12 @@ button:hover {
   justify-content: center;
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../images/burrito.jpg') no-repeat fixed center;
+  background-color: #FFFFFF;
+}
+.background-container {
+  background-color: rgb(209, 110, 110);
 }
 .page-header {
-  color: #FFFFFF;
+  color: #000000;
   font-size: 30px;
-  font-family: Dosis-Regular;
-  display: block;
-  text-align: left;
-  margin-bottom: 10px;
 }

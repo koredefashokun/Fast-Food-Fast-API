@@ -5,27 +5,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="/css/styles.css" rel="stylesheet" type="text/css" />
-  <link href="/css/forms.css" rel="stylesheet" type="text/css" />
+  <link href="../public/css/styles.css" rel="stylesheet" type="text/css" />
+  <link href="../public/css/forms.css" rel="stylesheet" type="text/css" />
   <title>Fast-Food-Fast | Register</title>
 </head>
 
 <body>
-  <div class="container">
+  <div class="container background-container">
     <form class="form-container">
       <div class="form-header">Register | Fast-Food-Fast</div>
-      <input placeholder="Your name" type="text" class="form-input" required />
-      <input placeholder="Your email" type="email" class="form-input" required />
-      <input placeholder="Your password" type="password" class="form-input" required />
-      <input placeholder="Confirm password" type="password" class="form-input" required />
+      <input placeholder="Your name" type="text" class="form-input" />
+      <input placeholder="Your email" type="email" class="form-input" />
+      <input placeholder="Your password" type="password" class="form-input" />
       <button class="form-button" id="fb">Register</button>
       <script>
-        var url = 'https://facebook.com'
+        var url = 'login.html'
         document.getElementById("fb").onclick = function () { console.log("frbakyvdts") };
         document.getElementById('fb').onclick = (e) => {
           e.preventDefault();
-          // location.href = url;
-          console.log('FRAJKUB')
+          location.href = url;
         }
       </script>
       <a class="form-support-link" href="login.html">Already have an account? Log In.</a>

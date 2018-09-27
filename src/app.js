@@ -35,12 +35,16 @@ app.get('/history', (req, res) => {
   res.sendFile(path.join(__dirname, '../UI/history.html'));
 });
 
-app.get('order-food', (req, res) => {
+app.get('/order-food', (req, res) => {
   res.sendFile(path.join(__dirname, '../UI/order-food.html'));
 });
 
-app.get('order-manager', (req, res) => {
-  res.sendFile(path.join(__dirname, '../UI/order-manager.html'));
+app.get('/admin-manager', (req, res) => {
+  res.sendFile(path.join(__dirname, '../UI/admin-manager.html'));
+});
+
+app.get('/admin-login', (req, res) => {
+  res.sendFile(path.join(__dirname, '../UI/admin-login.html'));
 });
 
 app.use('/', routes);
