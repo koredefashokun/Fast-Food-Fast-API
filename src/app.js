@@ -24,23 +24,23 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, '../ui/login.html'));
+  res.sendFile(path.join(__dirname, '../UI/login.html'));
 });
 
 app.get('/register', (req, res) => {
-  res.sendFile(path.join(__dirname, '../ui/register.html'));
+  res.sendFile(path.join(__dirname, '../UI/register.html'));
 });
 
 app.get('/history', (req, res) => {
-  res.sendFile(path.join(__dirname, '../ui/history.html'));
+  res.sendFile(path.join(__dirname, '../UI/history.html'));
 });
 
 app.get('order-food', (req, res) => {
-  res.sendFile(path.join(__dirname, '../ui/order-food.html'));
+  res.sendFile(path.join(__dirname, '../UI/order-food.html'));
 });
 
 app.get('order-manager', (req, res) => {
-  res.sendFile(path.join(__dirname, '../ui/order-manager.html'));
+  res.sendFile(path.join(__dirname, '../UI/order-manager.html'));
 });
 
 app.use('/', routes);
