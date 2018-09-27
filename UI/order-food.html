@@ -5,38 +5,60 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<link href="css/forms.css" rel="stylesheet" type="text/css" />
-	<link href="css/styles.css" rel="stylesheet" type="text/css" />
-	<title>Order Food | Fast-Food-Fast</title>
+	<link href="/css/styles.css" rel="stylesheet" type="text/css" />
+	<link href="/css/order-food.css" rel="stylesheet" type="text/css" />
+	<script src="/js/modal.js"></script>
+	<title>Menu | Fast-Food-Fast</title>
 </head>
 
 <body>
 	<div class="container">
-		<form class="form-container">
-			<div class="form-header">Order Food</div>
-			<select class="form-input">
-				<option>Item</option>
-				<option>Chicken and Chips</option>
-				<option>Large Pepperoni Pizza</option>
-				<option>Ribeye Steak</option>
-				<option>Chicken Burrito</option>
-				<option>Shish Kebab</option>
-				<option>BBQ Chicken</option>
-				<option>Lamb Chops</option>
-				<option>Mac n' Cheese</option>
-				<option>Cheeseburger</option>
-				<option>Chicken Tenders</option>
-			</select>
-			<select class="form-input">
-				<option>Quantity</option>
-				<option>1</option>
-				<option>2</option>
-				<option>3</option>
-				<option>4</option>
-				<option>5</option>
-			</select>
-			<button class="form-button"><a href="history.html">Order</a></button>
-		</form>
+		<div class="order-food-container" align="center">
+			<div class="top-bar">
+				<p>Welcome, Oluwakorede!</p>
+				<div class="nav-links">
+					<a href="history.html">Order History</a>
+					<a href="#">Logout</a>
+				</div>
+			</div>
+			<h1>Our Menu</h1>
+			<div class="order-food-item">
+				<div class="order-food-item-image">
+					<img src="images/breakfast.jpg" />
+				</div>
+				<div class="order-food-item-description">
+					<p class="order-food-name">Pancakes</p>
+					<p>Soft, decadent pancake, drizzled with homemade maple syrup</p>
+					<button id="order-button" class="order-button">Order</button>
+				</div>
+			</div>
+			<div class="order-food-item">
+				<div class="order-food-item-image">
+					<img src="images/burrito.jpg" />
+				</div>
+				<div class="order-food-item-description">
+					<p class="order-food-name">Chicken Burrito</p>
+					<p>Lorem ipsum dolor sit amet</p>
+					<button id="order-button" class="order-button">Order</button>
+				</div>
+			</div>
+			<div class="order-food-item">
+				<div class="order-food-item-image">
+					<img src="images/burrito.jpg" />
+				</div>
+				<div class="order-food-item-description">
+					<p class="order-food-name">Chicken Burrito</p>
+					<p>Lorem ipsum dolor sit amet</p>
+					<button id="order-button" class="order-button">Order</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal">
+		<div class="modal-content">
+			<span class="close-button">&times;</span>
+			<h1>Successfully ordered!</h1>
+		</div>
 	</div>
 </body>
 

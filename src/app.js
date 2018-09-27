@@ -24,23 +24,27 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, '../ui/login.html'));
+  res.sendFile(path.join(__dirname, '../UI/login.html'));
 });
 
 app.get('/register', (req, res) => {
-  res.sendFile(path.join(__dirname, '../ui/register.html'));
+  res.sendFile(path.join(__dirname, '../UI/register.html'));
 });
 
 app.get('/history', (req, res) => {
-  res.sendFile(path.join(__dirname, '../ui/history.html'));
+  res.sendFile(path.join(__dirname, '../UI/history.html'));
 });
 
-app.get('order-food', (req, res) => {
-  res.sendFile(path.join(__dirname, '../ui/order-food.html'));
+app.get('/order-food', (req, res) => {
+  res.sendFile(path.join(__dirname, '../UI/order-food.html'));
 });
 
-app.get('order-manager', (req, res) => {
-  res.sendFile(path.join(__dirname, '../ui/order-manager.html'));
+app.get('/admin-manager', (req, res) => {
+  res.sendFile(path.join(__dirname, '../UI/admin-manager.html'));
+});
+
+app.get('/admin-login', (req, res) => {
+  res.sendFile(path.join(__dirname, '../UI/admin-login.html'));
 });
 
 app.use('/', routes);
