@@ -1,0 +1,54 @@
+.order-food-container {
+  align-items: center;
+  height: 100vh;
+  width: 80vw;
+  overflow-y: scroll;
+}
+.order-food-container .order-food-item {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 50%;
+  background-color: #FFFFFF;
+  margin-top: 10px;
+}
+.order-food-container .order-food-item .order-food-item-image {
+  width: 50%;
+  height: 100%;
+}
+.order-food-container .order-food-item .order-food-item-image img {
+  height: 100%;
+  width: 100%;
+}
+.order-food-container .order-food-item .order-food-item-description {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.order-food-container .order-food-item .order-food-item-description p {
+  font-family: Dank Mono;
+}
+.order-food-container .order-food-item .order-food-item-description button {
+  font-family: Dank Mono;
+  width: 100px;
+  height: 35px;
+  color: #FFFFFF;
+  border: none;
+  font-size: 14px;
+  background-color: rgb(209, 110, 110);
+}
+.order-food-container .order-food-item .order-food-item-description button:hover {
+  font-family: Dank Mono;
+  width: 100px;
+  height: 35px;
+  background-color: #FFFFFF;
+  border: 0.2px solid rgb(209, 110, 110);
+  font-size: 14px;
+  color: rgb(209, 110, 110);
+}
+.order-food-name {
+  font-size: 30px;
+}
