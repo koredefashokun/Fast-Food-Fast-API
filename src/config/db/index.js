@@ -1,18 +1,28 @@
-require('dotenv').config();
 import { Pool } from 'pg';
+import dotenv from 'dotenv';
 
-const pool = new Pool();
+dotenv.load();
 
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL
+});
+
+pool.on('connect', () => {
+  console.log('Pool connected!');
+});
 
 const db = {
-  query: async (string, params) => {
-    try {
-      await pool.query(string, params);
-    } catch (e) {
-      console.log(e);
-    }
+  query(text, params) {
+    return new Promise((resolve, reject) => {
+      pool.query(text, params)
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err);
+        })
+    })
   }
 }
-
 
 export default db;

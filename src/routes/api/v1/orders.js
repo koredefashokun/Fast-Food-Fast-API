@@ -1,119 +1,115 @@
 import { Router } from 'express';
+import moment from 'moment';
 
 const router = new Router();
-import database from '../../../../database';
 import db from '../../../config/db';
 
-function containsObject(obj, list) {
-  var i;
-  for (i = 0; i < list.length; i++) {
-    if (list[i] === obj) {
-      return true;
-    }
-  }
+import { adminMiddleware, authMiddleware } from '../../../middleware';
 
-  return false;
-}
-
-router.get('/', async (req, res) => {
-  // let orders = [];
-  // const query = await db.query('SELECT * FROM orders ORDER BY order_id ASC');
-  // await query.on('row', async order => {
-  //   await orders.push(order);
-  // });
-  // res.status(200).json({
-  //   success: true,
-  //   orders
-  // });
-  const orders = await database.orders;
-  if (!orders) {
-    res.status(400).json({
-      success: false,
-      message: 'Unable to fetch orders.'
-    });
-  } else {
+router.get('/', adminMiddleware, async (req, res) => {
+  const query = 'SELECT * FROM orders';
+  try {
+    const { rows: orders } = await db.query(query);
     res.status(200).json({
       success: true,
       orders
     });
-  }
-});
-
-router.get('/:orderId', async (req, res) => {
-  const { orderId } = req.params;
-  const order = await database.orders.find(
-    function (obj) {
-      if (obj.id == orderId) {
-        return obj;
-      }
-    }
-  );
-  if (order) {
-    res.status(200).json({
-      success: true,
-      order
-    })
-  } else {
-    res.status(404).json({
+  } catch (error) {
+    res.status(400).json({
       success: false,
-      message: 'Order not found!'
+      message: 'Unable to fetch your orders.',
+      error
     });
   }
 });
 
-router.post('/', (req, res) => {
+router.get('/:orderId', adminMiddleware, async (req, res) => {
+  const { orderId } = req.params;
+  const text = 'SELECT * FROM orders WHERE id = $1';
+  try {
+    const { rows } = await db.query(text, [orderId]);
+    if (!rows[0]) {
+      res.status(404).json({
+        success: false,
+        message: 'Order not found in database.'
+      });
+    }
+    res.status(200).json({
+      success: true,
+      order: rows[0]
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: 'An error occured while fetching orders.'
+    });
+  }
+});
+
+router.post('/', authMiddleware, async (req, res) => {
+  const { id } = req.decoded;
   const { item, quantity } = req.body;
   if (!item || !quantity) {
-    res.status(500).json({
+    res.status(400).json({
       success: false,
       message: 'Please fill out all required fields!'
     });
     return;
   }
-  const id = database.orders.length + 1;
-  const payload = {
+  const query = `INSERT INTO orders(user_id, item, quantity, status, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6) returning *`;
+  const values = [
     id,
     item,
     quantity,
-    completed: false
-  };
-  database.orders.push(payload);
-  if (containsObject(payload, database.orders)) {
-    res.status(200).json({
+    'New',
+    moment(new Date()),
+    moment(new Date())
+  ];
+  try {
+    const { rows } = await db.query(query, values);
+    res.status(201).json({
       success: true,
-      message: 'Order successfully added!',
-      order: payload
+      order: rows[0]
     });
-  } else {
+  } catch (error) {
     res.status(400).json({
       success: false,
-      message: 'Order not added to the database!'
+      message: 'Unable to add order.',
+      error
     });
   }
 });
 
-router.put('/:orderId', (req, res) => {
+router.put('/:orderId', adminMiddleware, async (req, res) => {
   const { orderId } = req.params;
-  var { completed } = req.body;
-  // If 'true' is entered as a string, make it a boolean!
-  completed = JSON.parse(completed);
-  var order = database.orders.find(
-    function (obj) {
-      if (obj.id == orderId) {
-        return obj;
-      }
-    }
-  );
-  if (order) {
-    order.completed = completed;
-    res.json({
-      success: true,
-      order
-    });
-  } else {
-    res.status(404).json({
+  const { status } = req.body;
+  const statusArray = ['New', 'Processing', 'Cancelled', 'Complete']
+  if (!statusArray.includes(status)) {
+    res.status(400).json({
       success: false,
-      message: 'Order not found!'
+      message: 'Please carry out a valid action!'
+    });
+  }
+  const findQuery = 'SELECT * FROM orders WHERE id=$1';
+  const updateQuery = `UPDATE orders SET status=$1 WHERE id=$2 returning *`;
+  try {
+    const { rows } = await db.query(findQuery, [orderId]);
+    if (!rows[0]) {
+      res.status(404).json({
+        success: false,
+        message: 'Order does not exist!'
+      });
+    }
+    const values = [status, orderId];
+    const response = await db.query(updateQuery, values);
+    res.status(200).json({
+      success: true,
+      order: response.rows[0]
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error
     });
   }
 });
