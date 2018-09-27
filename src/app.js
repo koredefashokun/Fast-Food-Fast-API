@@ -7,16 +7,21 @@ import init from './config/db/init';
 
 import routes from './routes';
 
-if (!process.env.NODE_ENV) {
+if (!process.env.NODE_ENV || process.env.NODE_ENV !== 'test') {
   dotenv.load();
-} else if (process.env.NODE_ENV === `production`) {
+} else if (process.env.NODE_ENV === 'production') {
   app.use(morgan('combined'));
 } else {
   app.use(morgan('dev'));
 }
 
+if (process.env.NODE_ENV === 'test') {
+  const connString = 'postgres://bojshpfilkqszd:202908511f23c6effe50433613077d9e9f2d5ed73c28b3a8463f07b345b1bc1c@ec2-54-235-101-91.compute-1.amazonaws.com:5432/d7k2i2lhv289ll'
+} else {
+  const connString = process.env.DATABASE_URL || 'postgresql://koredefashokun:Korede12@localhost/fast_food_fast';
+}
+
 const port = process.env.PORT || 4500;
-const connString = process.env.DATABASE_URL || 'postgresql://koredefashokun:Korede12@localhost/fast_food_fast';
 
 const app = express();
 app.use(bodyParser.json());

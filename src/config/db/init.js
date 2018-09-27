@@ -1,4 +1,5 @@
-import { Client } from 'pg';
+import pg, { Client } from 'pg';
+pg.defaults.ssl = true;
 
 const init = async DB_URI => {
   const userClient = new Client(DB_URI);
