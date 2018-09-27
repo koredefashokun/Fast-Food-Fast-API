@@ -15,12 +15,6 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'));
 }
 
-if (process.env.NODE_ENV === 'test') {
-  const connString = 'postgres://bojshpfilkqszd:202908511f23c6effe50433613077d9e9f2d5ed73c28b3a8463f07b345b1bc1c@ec2-54-235-101-91.compute-1.amazonaws.com:5432/d7k2i2lhv289ll'
-} else {
-  const connString = process.env.DATABASE_URL || 'postgresql://koredefashokun:Korede12@localhost/fast_food_fast';
-}
-
 const port = process.env.PORT || 4500;
 
 const app = express();
@@ -53,9 +47,17 @@ app.use('/', routes);
 
 app.listen(port, async () => {
   await console.log(`Server started on port ${port}.`);
-  await init(connString)
-    .then(console.log('Connected to PostgresQL!'))
-    .catch(err => console.error(err));
+  if (process.env.NODE_ENV === 'test') {
+    const connString = 'postgres://bojshpfilkqszd:202908511f23c6effe50433613077d9e9f2d5ed73c28b3a8463f07b345b1bc1c@ec2-54-235-101-91.compute-1.amazonaws.com:5432/d7k2i2lhv289ll';
+    await init(connString)
+      .then(console.log('Connected to PostgresQL!'))
+      .catch(err => console.error(err));
+  } else {
+    const connString = process.env.DATABASE_URL || 'postgresql://koredefashokun:Korede12@localhost/fast_food_fast';
+    await init(connString)
+      .then(console.log('Connected to PostgresQL!'))
+      .catch(err => console.error(err));
+  }
 });
 
 
