@@ -48,7 +48,9 @@ describe('Orders', () => {
       ]);
       done();
     });
+    
     let token;
+    
     beforeEach((done) => {
       chai.request(app)
         .post('/api/v1/auth/signup')
@@ -69,6 +71,7 @@ describe('Orders', () => {
         item: 'Chicken and Chips',
         quantity: 2
       }
+      
       chai.request(app)
         .post('/api/v1/orders')
         .send(order)
@@ -78,12 +81,15 @@ describe('Orders', () => {
           res.body.should.be.a('object');
           done();
         });
+      
     });
 
     it('Should not create a new order without required fields', (done) => {
+      
       const order = {
         quantity: 2
       }
+      
       chai.request(app)
         .post('/api/v1/orders')
         .set('Authorization', `Bearer ${token}`)
@@ -129,7 +135,7 @@ describe('Orders', () => {
           userToken = res.body.token;
           done();
         });
-    })
+    });
 
     before((done) => {
       chai.request(app)
@@ -142,8 +148,8 @@ describe('Orders', () => {
         .end((err, res) => {
           id = res.body.order.id;
           done();
-        })
-    })
+        });
+    });
 
     after((done) => {
       Promise.all([
@@ -256,6 +262,7 @@ describe('Orders', () => {
         ]);
         done();
       });
+      
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
@@ -301,10 +308,11 @@ describe('Orders', () => {
           res.body.should.be.a('object');
           res.body.should.have.a.property('success').eql(false);
           done();
-        })
+        });
     });
 
   });
+  
   describe('POST /api/v1/auth/login', () => {
 
     before((done) => {
@@ -341,7 +349,7 @@ describe('Orders', () => {
           res.body.should.have.a.property('success').eql(true);
           res.body.token.should.be.a('string');
           done();
-        })
+        });
     });
 
     it('Should not log in a user without required credentials', (done) => {
@@ -355,7 +363,7 @@ describe('Orders', () => {
           res.body.should.be.a('object');
           res.body.should.have.a.property('success').eql(false);
           done();
-        })
+        });
     });
 
   });
@@ -401,8 +409,9 @@ describe('Orders', () => {
           res.body.item.should.have.a.property('description').eql('Lorem ipsum dolor sit amet.');
           res.body.item.should.have.a.property('image_url').eql('https://facebook.com');
           done();
-        })
+        });
     });
+    
   });
 
   describe('GET /api/v1/menu', () => {
@@ -452,7 +461,7 @@ describe('Orders', () => {
           res.body.should.have.a.property('menu');
           res.body.menu.should.be.a('array');
           done();
-        })
+        });
     });
   });
 
@@ -478,10 +487,12 @@ describe('Orders', () => {
     });
 
     before((done) => {
+      
       const order = {
         item: 'Chicken and Chips',
         quantity: 2
       }
+      
       chai.request(app)
         .post('/api/v1/orders')
         .send(order)
@@ -491,7 +502,7 @@ describe('Orders', () => {
           res.body.should.be.a('object');
           done();
         });
-    })
+    });
 
     after((done) => {
       Promise.all([
@@ -510,7 +521,7 @@ describe('Orders', () => {
           res.body.orders.should.be.a('array');
           done();
         });
-    })
-  })
+    });
+  });
 });
 
