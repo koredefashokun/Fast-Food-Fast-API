@@ -245,6 +245,7 @@ describe('Orders', () => {
     });
 
   });
+
   describe('POST /api/v1/auth/signup', () => {
 
     it('Should create a user with provided credentials', (done) => {
@@ -359,8 +360,7 @@ describe('Orders', () => {
 
   });
 
-  describe('GET /api/v1/menu', () => {
-
+  describe('POST /api/v1/menu', () => {
     let adminToken;
 
     before((done) => {
@@ -374,7 +374,15 @@ describe('Orders', () => {
           adminToken = res.body.token;
           done();
         });
-    })
+    });
+
+    after((done) => {
+      Promise.all([
+        db.query('DELETE FROM users;'),
+        db.query('DELETE FROM orders')
+      ]);
+      done();
+    });
 
     it('Should create a new menu item', (done) => {
       chai.request(app)
@@ -394,7 +402,46 @@ describe('Orders', () => {
           res.body.item.should.have.a.property('image_url').eql('https://facebook.com');
           done();
         })
-    })
+    });
+  });
+
+  describe('GET /api/v1/menu', () => {
+    let adminToken;
+
+    before((done) => {
+      chai.request(app)
+        .post('/api/v1/admin/login')
+        .send({
+          email: 'admin@fastfoodfast.com',
+          password: 'admin123'
+        })
+        .end((err, res) => {
+          adminToken = res.body.token;
+          done();
+        });
+    });
+
+    before((done) => {
+      chai.request(app)
+        .post('/api/v1/menu')
+        .set('Authorization', `Admin ${adminToken}`)
+        .send({
+          name: 'Rice',
+          description: 'Lorem ipsum dolor sit amet.',
+          imageUrl: 'https://facebook.com'
+        })
+        .end(() => {
+          done();
+        });
+    });
+
+    after((done) => {
+      Promise.all([
+        db.query('DELETE FROM users;'),
+        db.query('DELETE FROM orders')
+      ]);
+      done();
+    });
 
     it('Should get the items on the menu', (done) => {
       chai.request(app)
@@ -407,8 +454,7 @@ describe('Orders', () => {
           done();
         })
     });
-
-  })
+  });
 
   describe('GET /api/v1/users/:userId/orders', () => {
 
