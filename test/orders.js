@@ -41,8 +41,8 @@ describe('Orders', () => {
   });
 
   describe('POST /api/v1/orders', () => {
-    afterEach(async (done) => {
-      await Promise.all([
+    afterEach((done) => {
+      Promise.all([
         db.query('DELETE FROM users;'),
         db.query('DELETE FROM orders')
       ]);
@@ -145,8 +145,8 @@ describe('Orders', () => {
         })
     })
 
-    after(async (done) => {
-      await Promise.all([
+    after((done) => {
+      Promise.all([
         db.query('DELETE FROM users;'),
         db.query('DELETE FROM orders')
       ]);
@@ -219,8 +219,8 @@ describe('Orders', () => {
         });
     });
 
-    after(async (done) => {
-      await Promise.all([
+    after((done) => {
+      Promise.all([
         db.query('DELETE FROM users;'),
         db.query('DELETE * FROM orders;')
       ]);
@@ -248,8 +248,8 @@ describe('Orders', () => {
   describe('POST /api/v1/auth/signup', () => {
 
     it('Should create a user with provided credentials', (done) => {
-      after(async (done) => {
-        await Promise.all([
+      after((done) => {
+        Promise.all([
           db.query('DELETE FROM users;'),
           db.query('DELETE FROM orders')
         ]);
@@ -306,8 +306,8 @@ describe('Orders', () => {
         });
     });
 
-    after(async (done) => {
-      await Promise.all([
+    after((done) => {
+      Promise.all([
         db.query('DELETE FROM users;'),
         db.query('DELETE FROM orders')
       ]);
@@ -433,8 +433,8 @@ describe('Orders', () => {
         });
     })
 
-    after(async (done) => {
-      await Promise.all([
+    after((done) => {
+      Promise.all([
         db.query('DELETE FROM users;'),
         db.query('DELETE FROM orders')
       ]);
