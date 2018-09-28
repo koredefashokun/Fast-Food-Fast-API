@@ -4,6 +4,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 
 import app from '../src/app';
+import db from '../src/config/db';
 
 chai.use(chaiHttp);
 const should = chai.should();
@@ -13,7 +14,7 @@ describe('Orders', () => {
   describe('GET /api/v1/orders', () => {
     let token;
 
-    beforeEach((done) => {
+    before((done) => {
       chai.request(app)
         .post('/api/v1/admin/login')
         .send({
@@ -40,7 +41,13 @@ describe('Orders', () => {
   });
 
   describe('POST /api/v1/orders', () => {
-
+    afterEach((done) => {
+      Promise.all([
+        db.query('DELETE FROM users;'),
+        db.query('DELETE FROM orders')
+      ]);
+      done();
+    });
     let token;
     beforeEach((done) => {
       chai.request(app)
@@ -138,6 +145,14 @@ describe('Orders', () => {
         })
     })
 
+    after((done) => {
+      Promise.all([
+        db.query('DELETE FROM users;'),
+        db.query('DELETE FROM orders')
+      ]);
+      done();
+    });
+
     it('Should get order by specified id', (done) => {
       chai.request(app)
         .get(`/api/v1/orders/${id}`)
@@ -188,7 +203,7 @@ describe('Orders', () => {
           userToken = res.body.token;
           done();
         });
-    })
+    });
 
     before((done) => {
       chai.request(app)
@@ -201,8 +216,16 @@ describe('Orders', () => {
         .end((err, res) => {
           id = res.body.order.id;
           done();
-        })
-    })
+        });
+    });
+
+    after((done) => {
+      Promise.all([
+        db.query('DELETE FROM users;'),
+        db.query('DELETE * FROM orders;')
+      ]);
+      done();
+    });
 
     it('Should be able to update order status', (done) => {
       chai.request(app)
@@ -222,9 +245,17 @@ describe('Orders', () => {
     });
 
   });
+
   describe('POST /api/v1/auth/signup', () => {
 
     it('Should create a user with provided credentials', (done) => {
+      after((done) => {
+        Promise.all([
+          db.query('DELETE FROM users;'),
+          db.query('DELETE FROM orders')
+        ]);
+        done();
+      });
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
@@ -238,10 +269,27 @@ describe('Orders', () => {
           res.body.should.have.a.property('success').eql(true);
           res.body.token.should.be.a('string');
           done();
-        })
+        });
     });
 
     it('Should not create a user without correct credentials', (done) => {
+      before((done) => {
+        chai.request(app)
+          .post('/api/v1/auth/signup')
+          .send({
+            name: 'Mr. Test',
+            email: 'testing123@gmail.com',
+            password: 'test123',
+            confirmPassword: 'test123'
+          })
+          .end((err, res) => {
+            res.body.should.be.a('object');
+            res.body.should.have.a.property('success').eql(true);
+            res.body.token.should.be.a('string');
+            done();
+          });
+      });
+
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
@@ -258,6 +306,28 @@ describe('Orders', () => {
 
   });
   describe('POST /api/v1/auth/login', () => {
+
+    before((done) => {
+      chai.request(app)
+        .post('/api/v1/auth/signup')
+        .send({
+          name: 'Mr. Test',
+          email: 'testing123@gmail.com',
+          password: 'test123',
+          confirmPassword: 'test123'
+        })
+        .end(() => {
+          done();
+        });
+    });
+
+    after((done) => {
+      Promise.all([
+        db.query('DELETE FROM users;'),
+        db.query('DELETE FROM orders')
+      ]);
+      done();
+    });
 
     it('Should log in a user with correct credentials', (done) => {
       chai.request(app)
@@ -290,8 +360,7 @@ describe('Orders', () => {
 
   });
 
-  describe('GET /api/v1/menu', () => {
-
+  describe('POST /api/v1/menu', () => {
     let adminToken;
 
     before((done) => {
@@ -305,7 +374,15 @@ describe('Orders', () => {
           adminToken = res.body.token;
           done();
         });
-    })
+    });
+
+    after((done) => {
+      Promise.all([
+        db.query('DELETE FROM users;'),
+        db.query('DELETE FROM orders')
+      ]);
+      done();
+    });
 
     it('Should create a new menu item', (done) => {
       chai.request(app)
@@ -325,7 +402,46 @@ describe('Orders', () => {
           res.body.item.should.have.a.property('image_url').eql('https://facebook.com');
           done();
         })
-    })
+    });
+  });
+
+  describe('GET /api/v1/menu', () => {
+    let adminToken;
+
+    before((done) => {
+      chai.request(app)
+        .post('/api/v1/admin/login')
+        .send({
+          email: 'admin@fastfoodfast.com',
+          password: 'admin123'
+        })
+        .end((err, res) => {
+          adminToken = res.body.token;
+          done();
+        });
+    });
+
+    before((done) => {
+      chai.request(app)
+        .post('/api/v1/menu')
+        .set('Authorization', `Admin ${adminToken}`)
+        .send({
+          name: 'Rice',
+          description: 'Lorem ipsum dolor sit amet.',
+          imageUrl: 'https://facebook.com'
+        })
+        .end(() => {
+          done();
+        });
+    });
+
+    after((done) => {
+      Promise.all([
+        db.query('DELETE FROM users;'),
+        db.query('DELETE FROM orders')
+      ]);
+      done();
+    });
 
     it('Should get the items on the menu', (done) => {
       chai.request(app)
@@ -338,8 +454,7 @@ describe('Orders', () => {
           done();
         })
     });
-
-  })
+  });
 
   describe('GET /api/v1/users/:userId/orders', () => {
 
@@ -378,6 +493,14 @@ describe('Orders', () => {
         });
     })
 
+    after((done) => {
+      Promise.all([
+        db.query('DELETE FROM users;'),
+        db.query('DELETE FROM orders')
+      ]);
+      done();
+    });
+
     it('Should get the orders made by the specified user', (done) => {
       chai.request(app)
         .get(`/api/v1/users/${id}/orders`)
@@ -390,3 +513,4 @@ describe('Orders', () => {
     })
   })
 });
+
