@@ -67,7 +67,7 @@ describe('Orders', () => {
         .send(order)
         .set('Authorization', `Bearer ${token}`)
         .end((err, res) => {
-          res.should.have.status(201);
+          res.should.have.status(200);
           res.body.should.be.a('object');
           done();
         });
@@ -82,7 +82,7 @@ describe('Orders', () => {
         .set('Authorization', `Bearer ${token}`)
         .send(order)
         .end((err, res) => {
-          res.should.have.status(400);
+          res.should.have.status(500);
           res.body.should.be.a('object');
           res.body.success.should.eql(false);
           done();

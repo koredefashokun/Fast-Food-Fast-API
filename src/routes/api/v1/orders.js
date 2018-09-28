@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import moment from 'moment';
 
 const router = new Router();
 import db from '../../../config/db';
@@ -15,9 +14,9 @@ router.get('/', adminMiddleware, async (req, res) => {
       orders
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       success: false,
-      message: 'Unable to fetch your orders.',
+      message: 'An error occured while attempting to fetch orders.',
       error
     });
   }
@@ -39,9 +38,9 @@ router.get('/:orderId', adminMiddleware, async (req, res) => {
       order: rows[0]
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       success: false,
-      message: 'An error occured while fetching orders.'
+      message: 'An error occured while fetching order.'
     });
   }
 });
@@ -62,19 +61,19 @@ router.post('/', authMiddleware, async (req, res) => {
     item,
     quantity,
     'New',
-    moment(new Date()),
-    moment(new Date())
+    new Date(),
+    new Date()
   ];
   try {
     const { rows } = await db.query(query, values);
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       order: rows[0]
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       success: false,
-      message: 'Unable to add order.',
+      message: 'An error occured while attempting to add order.',
       error
     });
   }
@@ -107,7 +106,7 @@ router.put('/:orderId', adminMiddleware, async (req, res) => {
       order: response.rows[0]
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       success: false,
       error
     });
