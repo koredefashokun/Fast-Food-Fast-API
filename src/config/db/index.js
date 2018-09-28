@@ -1,5 +1,6 @@
-import { Pool } from 'pg';
+import pg, { Pool } from 'pg';
 import dotenv from 'dotenv';
+pg.defaults.ssl = true;
 
 dotenv.load();
 
