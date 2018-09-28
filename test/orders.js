@@ -14,7 +14,7 @@ describe('Orders', () => {
   describe('GET /api/v1/orders', () => {
     let token;
 
-    beforeEach((done) => {
+    before((done) => {
       chai.request(app)
         .post('/api/v1/admin/login')
         .send({
@@ -272,6 +272,23 @@ describe('Orders', () => {
     });
 
     it('Should not create a user without correct credentials', (done) => {
+      before((done) => {
+        chai.request(app)
+          .post('/api/v1/auth/signup')
+          .send({
+            name: 'Mr. Test',
+            email: 'testing123@gmail.com',
+            password: 'test123',
+            confirmPassword: 'test123'
+          })
+          .end((err, res) => {
+            res.body.should.be.a('object');
+            res.body.should.have.a.property('success').eql(true);
+            res.body.token.should.be.a('string');
+            done();
+          });
+      });
+
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
@@ -289,7 +306,7 @@ describe('Orders', () => {
   });
   describe('POST /api/v1/auth/login', () => {
 
-    beforeEach((done) => {
+    before((done) => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
@@ -298,10 +315,7 @@ describe('Orders', () => {
           password: 'test123',
           confirmPassword: 'test123'
         })
-        .end((err, res) => {
-          res.body.should.be.a('object');
-          res.body.should.have.a.property('success').eql(true);
-          res.body.token.should.be.a('string');
+        .end(() => {
           done();
         });
     });
