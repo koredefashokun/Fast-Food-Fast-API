@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import moment from 'moment';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -40,8 +39,8 @@ router.post('/signup', async (req, res) => {
     name,
     email,
     hash,
-    moment(new Date()),
-    moment(new Date())
+    new Date(),
+    new Date()
   ];
   try {
     const { rows } = await db.query(query, values);

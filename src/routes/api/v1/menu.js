@@ -27,9 +27,9 @@ router.post('/', adminMiddleware, async (req, res) => {
       item: rows[0]
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       success: false,
-      message: 'Unable to add item to menu',
+      message: 'An error occured while attempting to add item to menu',
       error
     });
   }
@@ -44,9 +44,9 @@ router.get('/', async (req, res) => {
       menu
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       success: false,
-      message: 'Unable to fetch the menu.',
+      message: 'An error occured while attempting to fetch the menu.',
       error
     });
   }

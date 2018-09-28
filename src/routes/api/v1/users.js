@@ -19,9 +19,9 @@ router.get('/:userId/orders', async (req, res) => {
       orders
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       success: false,
-      message: 'Unable to fetch orders.',
+      message: 'An error occured while attempting to fetch orders.',
       error
     })
   }
