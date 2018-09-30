@@ -48,12 +48,12 @@ router.get('/:orderId', adminMiddleware, async (req, res) => {
 router.post('/', authMiddleware, async (req, res) => {
   const { id } = req.decoded;
   const { item, quantity } = req.body;
-  if (!item) {
+  if (!item || typeof item !== 'string') {
     res.status(400).json({
       success: false,
       message: 'Please enter order item correctly (Hint: Item must be a string)'
     });
-  } else if (!quantity) {
+  } else if (!quantity || typeof parseInt(quantity) !== 'number') {
     res.status(400).json({
       success: false,
       message: 'Please enter order item correctly (Hint: Quantity must be a number)'

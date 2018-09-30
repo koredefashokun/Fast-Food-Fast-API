@@ -14,29 +14,58 @@ const comparePasswords = (password, hash) => {
   return bcrypt.compare(password, hash);
 }
 
+const checkIfString = (field) => {
+  if (typeof field !== string) {
+    return false;
+  }
+  return true;
+}
+
 router.post('/signup', async (req, res) => {
   const { name, email, password, confirmPassword } = req.body;
-  if (!name || typeof name !== 'string') {
+  if (!name) {
     res.status(400).json({
       success: false,
-      message: 'Please enter your full name! (Hint: name must be a string)'
+      message: 'Please enter your full name!'
     });
-  } else if (!email || typeof email !== string) {
+  } else if (!email) {
     res.status(400).json({
       success: false,
-      message: 'Please enter your email address! (Hint: email must be a string)'
+      message: 'Please enter your email address!'
     });
-  } else if (!password || typeof password !== string) {
+  } else if (!password) {
     res.status(400).json({
       success: false,
-      message: 'Please enter a password to be created! (Hint password must be a string)'
+      message: 'Please enter a password to be created!'
     });
-  } else if (!confirmPassword || typeof confirmPassword !== 'string') {
+  } else if (!confirmPassword) {
     res.status(400).json({
       success: false,
-      message: 'Please enter password confirmation! (Hint confirmPassword must be a string)'
+      message: 'Please enter password confirmation!'
     });
-  } else if (!isValidEmail(email)) {
+  } else if (!checkIfString(name)) {
+    res.status(400).json({
+      success: false,
+      message: 'Name must be a string.'
+    });
+  } else if (!checkIfString(email)) {
+    res.status(400).json({
+      success: false,
+      message: 'Email address must be a string.'
+    });
+  } else if (!checkIfString(password)) {
+    res.status(400).json({
+      success: false,
+      message: 'Password must be a string.'
+    });
+  } else if (!checkIfString(confirmPassword)) {
+    res.status(400).json({
+      success: false,
+      message: 'Password confirmation must be a string.'
+    });
+  }
+
+  else if (!isValidEmail(email)) {
     res.status(400).json({
       success: false,
       message: 'Please make sure email is valid!'
