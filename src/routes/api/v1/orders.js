@@ -87,7 +87,7 @@ router.put('/:orderId', adminMiddleware, async (req, res) => {
   const { orderId } = req.params;
   const { status } = req.body;
   const statusArray = ['New', 'Processing', 'Cancelled', 'Completed']
-  if (!statusArray.includes(status.toLowerCase())) {
+  if (!statusArray.includes(status)) {
     res.status(400).json({
       success: false,
       message: 'Please carry out a valid action!'
