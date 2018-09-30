@@ -7,17 +7,17 @@ const router = new Router();
 
 router.post('/', adminMiddleware, async (req, res) => {
   const { name, description, imageUrl } = req.body;
-  if (!name) {
+  if (!name || typeof name != 'string') {
     res.status(400).json({
       success: false,
       message: 'Please enter the meal name correctly! (Hint: name must be a string)'
     });
-  } else if (!description) {
+  } else if (!description || typeof name != 'string') {
     res.status(400).json({
       success: false,
       message: 'Please enter the meal description correctly! (Hint: description must be a string)'
     });
-  } else if (!imageUrl) {
+  } else if (!imageUrl || typeof imageUrl != 'string') {
     res.status(400).json({
       success: false,
       message: 'Please enter the meal\'s image URL correctly! (Hint: imageUrl must be a string)'

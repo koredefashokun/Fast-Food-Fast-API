@@ -14,58 +14,29 @@ const comparePasswords = (password, hash) => {
   return bcrypt.compare(password, hash);
 }
 
-const checkIfString = (field) => {
-  if (typeof field !== string) {
-    return false;
-  }
-  return true;
-}
-
 router.post('/signup', async (req, res) => {
   const { name, email, password, confirmPassword } = req.body;
-  if (!name) {
+  if (!name || typeof name != 'string') {
     res.status(400).json({
       success: false,
-      message: 'Please enter your full name!'
+      message: 'Please enter your full name! (Hint: name must be a string)'
     });
-  } else if (!email) {
+  } else if (!email || typeof email != string) {
     res.status(400).json({
       success: false,
-      message: 'Please enter your email address!'
+      message: 'Please enter your email address! (Hint: email must be a string)'
     });
-  } else if (!password) {
+  } else if (!password || typeof password != string) {
     res.status(400).json({
       success: false,
-      message: 'Please enter a password to be created!'
+      message: 'Please enter a password to be created! (Hint password must be a string)'
     });
-  } else if (!confirmPassword) {
+  } else if (!confirmPassword || typeof confirmPassword != 'string') {
     res.status(400).json({
       success: false,
-      message: 'Please enter password confirmation!'
+      message: 'Please enter password confirmation! (Hint confirmPassword must be a string)'
     });
-  } else if (!checkIfString(name)) {
-    res.status(400).json({
-      success: false,
-      message: 'Name must be a string.'
-    });
-  } else if (!checkIfString(email)) {
-    res.status(400).json({
-      success: false,
-      message: 'Email address must be a string.'
-    });
-  } else if (!checkIfString(password)) {
-    res.status(400).json({
-      success: false,
-      message: 'Password must be a string.'
-    });
-  } else if (!checkIfString(confirmPassword)) {
-    res.status(400).json({
-      success: false,
-      message: 'Password confirmation must be a string.'
-    });
-  }
-
-  else if (!isValidEmail(email)) {
+  } else if (!isValidEmail(email)) {
     res.status(400).json({
       success: false,
       message: 'Please make sure email is valid!'
