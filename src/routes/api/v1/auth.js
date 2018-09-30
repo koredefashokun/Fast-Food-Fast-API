@@ -21,17 +21,17 @@ router.post('/signup', async (req, res) => {
       success: false,
       message: 'Please enter your full name! (Hint: name must be a string)'
     });
-  } else if (!email || typeof email != string) {
+  } else if (!email || typeof email !== 'string') {
     res.status(400).json({
       success: false,
       message: 'Please enter your email address! (Hint: email must be a string)'
     });
-  } else if (!password || typeof password != string) {
+  } else if (!password || typeof password !== 'string') {
     res.status(400).json({
       success: false,
       message: 'Please enter a password to be created! (Hint password must be a string)'
     });
-  } else if (!confirmPassword || typeof confirmPassword != 'string') {
+  } else if (!confirmPassword || typeof confirmPassword !== 'string') {
     res.status(400).json({
       success: false,
       message: 'Please enter password confirmation! (Hint confirmPassword must be a string)'
