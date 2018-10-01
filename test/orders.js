@@ -77,7 +77,7 @@ describe('Orders', () => {
         .send(order)
         .set('Authorization', `Bearer ${token}`)
         .end((err, res) => {
-          res.should.have.status(200);
+          res.should.have.status(201);
           res.body.should.be.a('object');
           done();
         });
@@ -385,10 +385,7 @@ describe('Orders', () => {
     });
 
     after((done) => {
-      Promise.all([
-        db.query('DELETE FROM users;'),
-        db.query('DELETE FROM orders')
-      ]);
+      db.query('DELETE FROM menu;');
       done();
     });
 
@@ -402,7 +399,7 @@ describe('Orders', () => {
           imageUrl: 'https://facebook.com'
         })
         .end((err, res) => {
-          res.should.have.status(200);
+          res.should.have.status(201);
           res.body.should.have.a.property('success').eql(true);
           res.body.should.have.a.property('item');
           res.body.item.should.have.a.property('name').eql('Rice');
@@ -442,14 +439,6 @@ describe('Orders', () => {
         .end(() => {
           done();
         });
-    });
-
-    after((done) => {
-      Promise.all([
-        db.query('DELETE FROM users;'),
-        db.query('DELETE FROM orders')
-      ]);
-      done();
     });
 
     it('Should get the items on the menu', (done) => {
@@ -498,8 +487,6 @@ describe('Orders', () => {
         .send(order)
         .set('Authorization', `Bearer ${token}`)
         .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.be.a('object');
           done();
         });
     });

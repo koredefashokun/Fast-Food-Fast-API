@@ -48,12 +48,16 @@ router.get('/:orderId', adminMiddleware, async (req, res) => {
 router.post('/', authMiddleware, async (req, res) => {
   const { id } = req.decoded;
   const { item, quantity } = req.body;
-  if (!item || !quantity) {
+  if (!item || typeof item !== 'string') {
     res.status(400).json({
       success: false,
-      message: 'Please fill out all required fields!'
+      message: 'Please enter order item correctly (Hint: Item must be a string)'
     });
-    return;
+  } else if (!quantity || typeof parseInt(quantity) !== 'number') {
+    res.status(400).json({
+      success: false,
+      message: 'Please enter order item correctly (Hint: Quantity must be a number)'
+    });
   }
   const query = `INSERT INTO orders(user_id, item, quantity, status, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6) returning *`;
   const values = [
@@ -66,7 +70,7 @@ router.post('/', authMiddleware, async (req, res) => {
   ];
   try {
     const { rows } = await db.query(query, values);
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       order: rows[0]
     });
@@ -82,7 +86,7 @@ router.post('/', authMiddleware, async (req, res) => {
 router.put('/:orderId', adminMiddleware, async (req, res) => {
   const { orderId } = req.params;
   const { status } = req.body;
-  const statusArray = ['New', 'Processing', 'Cancelled', 'Complete']
+  const statusArray = ['New', 'Processing', 'Cancelled', 'Completed']
   if (!statusArray.includes(status)) {
     res.status(400).json({
       success: false,
