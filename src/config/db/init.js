@@ -1,5 +1,14 @@
 import pg, { Client } from 'pg';
-pg.defaults.ssl = true;
+
+import dotenv from 'dotenv';
+
+dotenv.load();
+
+if (process.env.NODE_ENV == 'production') {
+  pg.defaults.ssl = true;
+} else {
+  pg.defaults.ssl = false;
+}
 
 const init = async DB_URI => {
   const userClient = new Client(DB_URI);

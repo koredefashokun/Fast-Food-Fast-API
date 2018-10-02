@@ -68,6 +68,8 @@ router.post('/signup', async (req, res) => {
     res.status(201).json({
       success: true,
       id: rows[0].id,
+      email: rows[0].email,
+      name: rows[0].name,
       token
     });
   } catch (error) {
@@ -127,8 +129,9 @@ router.post('/login', async (req, res) => {
     const token = await jwt.sign(payload, process.env.SECRET);
     res.status(200).json({
       success: true,
-      name: rows[0].name,
       id: rows[0].id,
+      email: rows[0].email,
+      name: rows[0].name,
       token
     });
   } catch (error) {

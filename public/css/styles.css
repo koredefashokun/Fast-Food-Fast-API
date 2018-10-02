@@ -48,7 +48,10 @@ button:hover {
   background-color: #FFFFFF;
 }
 .background-container {
-  background-color: rgb(209, 110, 110);
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../images/carrots-food-fresh.jpg');
+  background-size:     cover;                      /* <------ */
+  background-repeat:   no-repeat;
+  background-position: center center;
 }
 .page-header {
   color: #000000;
