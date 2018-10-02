@@ -1,12 +1,11 @@
 import pg, { Pool } from 'pg';
 import dotenv from 'dotenv';
-
 dotenv.load();
 
-if (process.env.DATABASE_URL.includes('.com')) {
-  pg.defaults.ssl = true;
-} else {
+if (process.env.NODE_ENV == 'test-local') {
   pg.defaults.ssl = false;
+} else {
+  pg.defaults.ssl = true;
 }
 
 const pool = new Pool({
