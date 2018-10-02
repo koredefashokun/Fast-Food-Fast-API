@@ -10,5 +10,5 @@ jobs:
   include:
     - stage: Test with Mocha
       script:
-        - NODE_ENV=test npm test
+        - npm test
 after_success: npm run coverage

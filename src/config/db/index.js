@@ -1,5 +1,6 @@
 import pg, { Pool } from 'pg';
 import dotenv from 'dotenv';
+
 dotenv.load();
 
 if (process.env.NODE_ENV == 'test-local') {

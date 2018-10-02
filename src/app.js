@@ -7,13 +7,7 @@ import init from './config/db/init';
 
 import routes from './routes';
 
-if (!process.env.NODE_ENV) {
-  dotenv.load();
-} else if (process.env.NODE_ENV === 'production') {
-  app.use(morgan('combined'));
-} else {
-  app.use(morgan('dev'));
-}
+dotenv.load();
 
 const port = process.env.PORT || 4500;
 
