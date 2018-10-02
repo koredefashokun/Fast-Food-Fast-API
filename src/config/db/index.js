@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.load();
 
-if (process.env.NODE_ENV == 'production') {
+if (process.env.DATABASE_URL.includes('.com')) {
   pg.defaults.ssl = true;
 } else {
   pg.defaults.ssl = false;
