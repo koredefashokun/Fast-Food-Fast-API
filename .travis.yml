@@ -6,13 +6,9 @@ before_install:
   - npm install -g codecov
 install:
   - npm install
-services:
-  - postgresql
 jobs:
   include:
     - stage: Test with Mocha
-      before_script:
-        - psql -c 'create database fast_food_fast;' -U postgres
       script:
         - NODE_ENV=test npm test
 after_success: npm run coverage
