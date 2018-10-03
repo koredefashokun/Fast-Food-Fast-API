@@ -19,8 +19,9 @@ window.onload = () => {
 				})
 			});
 			const data = await response.json();
+			console.log(data);
 			if (data.success) {
-				localStorage.setItem('@FastFoodFast:admin-token', data.token);
+				await localStorage.setItem('@FastFoodFast:admin-token', data.token);
 				location.href = '/admin-manager';
 			}
 		} catch (e) {

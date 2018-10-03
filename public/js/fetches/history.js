@@ -2,10 +2,8 @@ const API_URL = '/api/v1/users';
 const userId = localStorage.getItem('@FastFoodFast:id');
 window.onload = async () => {
 	const logoutButton = document.querySelector('#logout-button');
-	logoutButton.addEventListener('click', () => {
-		localStorage.removeItem('@FastFoodFast:token');
-		localStorage.removeItem('@FastFoodFast:name');
-		localStorage.removeItem('@FastFoodFast:id');
+	logoutButton.addEventListener('click', async () => {
+		await localStorage.clear();
 		location.href = '/login';
 	});
 	const table = document.querySelector('#table');

@@ -3,6 +3,11 @@ const API_URL_2 = '/api/v1/menu';
 window.onload = async () => {
 	const table = document.querySelector('#table');
 	const adminToken = localStorage.getItem('@FastFoodFast:admin-token');
+	const logoutLink = document.querySelector('#logout-link');
+	logoutLink.onclick = async () => {
+		await localStorage.clear();
+		location.href = '/admin-login';
+	}
 	const response = await fetch(`${API_URL}`, {
 		method: 'GET',
 		headers: {
@@ -84,10 +89,10 @@ window.onload = async () => {
 			const data = await response.json();
 			console.log(data);
 			if (data.success) {
-				// location.reload();
+				location.reload();
 			}
 		} catch (e) {
-			alert(e);
+			if (!e.includes('Failed to fetch')) alert(e);
 		}
 	}
 }

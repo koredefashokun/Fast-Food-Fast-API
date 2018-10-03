@@ -40,50 +40,49 @@ window.onload = async () => {
 			`;
 			orderFoodContainer.innerHTML += order;
 		});
-		if (orderFoodContainer.children.length > 2) {
-			const button = document.querySelector('#order-food-button');
-			button.onclick = async () => {
-				const token = localStorage.getItem('@FastFoodFast:token');
-				const name = await button.getAttribute('data-name');
-				const id = button.getAttribute('data-id');
-				const quantityElement = document.querySelector(`#order-food-${id}`);
-				const quantity = parseInt(quantityElement.options[quantityElement.selectedIndex].text);
-				const orderFood = async (token, item, quantity) => {
-					try {
-						const response = await fetch(`${API_URL_2}`, {
-							method: 'POST',
-							headers: {
-								'Accept': 'application/json',
-								'Content-Type': 'application/json',
-								'Authorization': `Bearer ${token}`
-							},
-							body: JSON.stringify({
-								item,
-								quantity
-							})
-						});
-						const data = response.json();
-						if (data.success) {
-							toggleModal();
-						}
-					} catch (e) {
-						alert(e);
-					}
-				}
-				try {
-					await orderFood(token, name, quantity);
-				} catch (e) {
-					alert(e);
-				}
-			}
-		}
 		const logoutButton = document.querySelector('#logout-button');
-		logoutButton.addEventListener('click', () => {
-			localStorage.removeItem('@FastFoodFast:token');
-			localStorage.removeItem('@FastFoodFast:name');
+		logoutButton.addEventListener('click', async () => {
+			await localStorage.clear();
 			location.href = '/login';
 		});
 	} catch (e) {
 		alert(e);
+	}
+	if (orderFoodContainer && orderFoodContainer.children.length > 2) {
+		const button = document.querySelector('#order-food-button');
+		button.onclick = async () => {
+			const token = localStorage.getItem('@FastFoodFast:token');
+			const name = await button.getAttribute('data-name');
+			const id = button.getAttribute('data-id');
+			const quantityElement = document.querySelector(`#order-food-${id}`);
+			const quantity = parseInt(quantityElement.options[quantityElement.selectedIndex].text);
+			const orderFood = async (token, item, quantity) => {
+				try {
+					const response = await fetch(`${API_URL_2}`, {
+						method: 'POST',
+						headers: {
+							'Accept': 'application/json',
+							'Content-Type': 'application/json',
+							'Authorization': `Bearer ${token}`
+						},
+						body: JSON.stringify({
+							item,
+							quantity
+						})
+					});
+					const data = response.json();
+					if (data.success) {
+						toggleModal();
+					}
+				} catch (e) {
+					alert(e);
+				}
+			}
+			try {
+				await orderFood(token, name, quantity);
+			} catch (e) {
+				alert(e);
+			}
+		}
 	}
 }
