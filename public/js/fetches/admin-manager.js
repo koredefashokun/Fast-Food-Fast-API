@@ -1,4 +1,5 @@
 const API_URL = '/api/v1/orders';
+const API_URL_2 = '/api/v1/menu';
 window.onload = async () => {
 	const table = document.querySelector('#table');
 	const adminToken = localStorage.getItem('@FastFoodFast:admin-token');
@@ -33,7 +34,7 @@ window.onload = async () => {
 			table.innerHTML += item;
 		});
 
-		table.addEventListener('click', e => {
+		table.addEventListener('click', async e => {
 			if (e.target.matches('button.action-button')) {
 				const actionButton = e.target;
 				const id = actionButton.getAttribute('data-id');
@@ -56,6 +57,33 @@ window.onload = async () => {
 					status
 				})
 			});
+		} catch (e) {
+			alert(e);
+		}
+	}
+	const createMenuItemForm = document.querySelector('.create-menu-item-form');
+	createMenuItemForm.onsubmit = async () => {
+		const menuItemName = document.querySelector('#menu-item-name');
+		const menuItemDescription = document.querySelector('#menu-item-description');
+		const menuItemImageUrl = document.querySelector('#menu-item-image-url');
+		try {
+			const response = await fetch(`${API_URL_2}`, {
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+					'Authorization': `Admin ${adminToken}`
+				},
+				body: JSON.stringify({
+					item: menuItemName,
+					description: menuItemDescription,
+					imageUrl: menuItemImageUrl
+				})
+			});
+			const data = await response.json();
+			if (data.success) {
+				location.reload();
+			}
 		} catch (e) {
 			alert(e);
 		}

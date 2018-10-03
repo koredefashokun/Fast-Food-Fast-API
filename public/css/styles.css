@@ -4,6 +4,9 @@
   box-sizing: border-box;
   font-family: Dank Mono;
 }
+hr {
+  width: 90%;
+}
 *:focus {
   outline: none;
 }

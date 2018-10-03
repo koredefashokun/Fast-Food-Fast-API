@@ -9,7 +9,7 @@
     "build": "npm run clean && npx babel src -d dist --source-maps",
     "test:local": "NODE_ENV=test-local nyc --reporter=lcov --reporter=text mocha --require @babel/register --exit",
     "test": "nyc --reporter=lcov --reporter=text mocha --require @babel/register --exit",
-    "dev": "nodemon --exec npx babel-node ./src/app.js",
+    "dev": "nodemon --exec NODE_ENV=development npx babel-node ./src/app.js",
     "heroku-postbuild": "npm run build",
     "start": "node dist/app"
   },

@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 dotenv.load();
 
-if (process.env.NODE_ENV == 'test-local') {
+if (process.env.NODE_ENV == 'test-local' || process.env.NODE_ENV == 'development') {
   pg.defaults.ssl = false;
 } else {
   pg.defaults.ssl = true;
