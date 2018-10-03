@@ -9,6 +9,8 @@ install:
 jobs:
   include:
     - stage: Test with Mocha
+      before_script:
+        - psql -c 'create database fast_food_fast;' -U postgres
       script:
-        - npm test
+        - NODE_ENV=test npm test
 after_success: npm run coverage

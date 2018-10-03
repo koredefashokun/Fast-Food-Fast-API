@@ -7,8 +7,7 @@
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "clean": "rm -rf ./dist",
     "build": "npm run clean && npx babel src -d dist --source-maps",
-    "test:local": "NODE_ENV=test-local nyc --reporter=lcov --reporter=text mocha --require @babel/register --exit",
-    "test": "nyc --reporter=lcov --reporter=text mocha --require @babel/register --exit",
+    "test": "NODE_ENV=test nyc --reporter=lcov --reporter=text mocha --require @babel/register --exit",
     "dev": "nodemon --exec NODE_ENV=development npx babel-node ./src/app.js",
     "heroku-postbuild": "npm run build",
     "start": "node dist/app"

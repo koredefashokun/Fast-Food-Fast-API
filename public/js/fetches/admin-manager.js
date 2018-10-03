@@ -63,9 +63,9 @@ window.onload = async () => {
 	}
 	const createMenuItemForm = document.querySelector('.create-menu-item-form');
 	createMenuItemForm.onsubmit = async () => {
-		const menuItemName = document.querySelector('#menu-item-name');
-		const menuItemDescription = document.querySelector('#menu-item-description');
-		const menuItemImageUrl = document.querySelector('#menu-item-image-url');
+		const menuItemName = document.querySelector('#menu-item-name').value;
+		const menuItemDescription = document.querySelector('#menu-item-description').value;
+		const menuItemImageUrl = document.querySelector('#menu-item-image-url').value;
 		try {
 			const response = await fetch(`${API_URL_2}`, {
 				method: 'POST',
@@ -75,14 +75,16 @@ window.onload = async () => {
 					'Authorization': `Admin ${adminToken}`
 				},
 				body: JSON.stringify({
-					item: menuItemName,
+					name: menuItemName,
 					description: menuItemDescription,
 					imageUrl: menuItemImageUrl
 				})
 			});
+			console.log(response);
 			const data = await response.json();
+			console.log(data);
 			if (data.success) {
-				location.reload();
+				// location.reload();
 			}
 		} catch (e) {
 			alert(e);
