@@ -6,6 +6,8 @@ before_install:
   - npm install -g codecov
 install:
   - npm install
+services:
+  - postgresql
 jobs:
   include:
     - stage: Test with Mocha
