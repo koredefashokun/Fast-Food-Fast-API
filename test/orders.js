@@ -1,4 +1,3 @@
-process.env.NODE_ENV = 'test';
 import 'babel-polyfill';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
@@ -368,6 +367,120 @@ describe('Orders', () => {
 
   });
 
+  describe('POST /api/v1/admin/login', () => {
+
+    it('Should login an admin with valid credentials', (done) => {
+      chai.request(app)
+        .post('/api/v1/admin/login')
+        .send({
+          email: 'admin@fastfoodfast.com',
+          password: 'admin123'
+        })
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property('success').eql(true);
+          res.body.should.have.property('token');
+          res.body.token.should.be.a('string');
+          done();
+        })
+    });
+
+    it('Should not login an admin with incorrect email', (done) => {
+      chai.request(app)
+        .post('/api/v1/admin/login')
+        .send({
+          email: 'fake-email@fastfoodfast.com',
+          password: 'admin123'
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.property('success').eql(false);
+          res.body.should.have.property('message');
+          res.body.message.should.be.a('string');
+          done();
+        });
+    });
+
+    it('Should not login an admin with incorrect password', (done) => {
+      chai.request(app)
+        .post('/api/v1/admin/login')
+        .send({
+          email: 'admin123@fastfoodfast.com',
+          password: 'FakePassword'
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.property('success').eql(false);
+          res.body.should.have.property('message');
+          res.body.message.should.be.a('string');
+          done();
+        });
+    });
+
+    it('Should not login an admin with invalid password', (done) => {
+      chai.request(app)
+        .post('/api/v1/admin/login')
+        .send({
+          email: 'admin123@fastfoodfast.com',
+          password: 23
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.property('success').eql(false);
+          res.body.should.have.property('message');
+          res.body.message.should.be.a('string');
+          done();
+        });
+    });
+
+    it('Should not login an admin with invalid email', (done) => {
+      chai.request(app)
+        .post('/api/v1/admin/login')
+        .send({
+          email: 24,
+          password: 'FakePassword'
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.property('success').eql(false);
+          res.body.should.have.property('message');
+          res.body.message.should.be.a('string');
+          done();
+        });
+    });
+
+    it('Should not login an admin with empty email field', (done) => {
+      chai.request(app)
+        .post('/api/v1/admin/login')
+        .send({
+          password: 'FakePassword'
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.property('success').eql(false);
+          res.body.should.have.property('message');
+          res.body.message.should.be.a('string');
+          done();
+        });
+    });
+
+    it('Should not login an admin with empty password field', (done) => {
+      chai.request(app)
+        .post('/api/v1/admin/login')
+        .send({
+          email: 'fake-email@fastfoodfast.com'
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.property('success').eql(false);
+          res.body.should.have.property('message');
+          res.body.message.should.be.a('string');
+          done();
+        });
+    });
+
+  })
+
   describe('POST /api/v1/menu', () => {
     let adminToken;
 
@@ -407,6 +520,40 @@ describe('Orders', () => {
           res.body.item.should.have.a.property('image_url').eql('https://facebook.com');
           done();
         });
+    });
+
+    it('Should not create a new menu item without name field', (done) => {
+      chai.request(app)
+        .post('/api/v1/menu')
+        .set('Authorization', `Admin ${adminToken}`)
+        .send({
+          description: 'Lorem ipsum dolor sit amet.',
+          imageUrl: 'https://facebook.com'
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.a.property('success').eql(false);
+          res.body.should.have.a.property('message');
+          res.body.message.should.be.a('string');
+          done();
+        })
+    });
+
+    it('Should not create a new menu item without description field', (done) => {
+      chai.request(app)
+        .post('/api/v1/menu')
+        .set('Authorization', `Admin ${adminToken}`)
+        .send({
+          name: 'Rice',
+          imageUrl: 'https://facebook.com'
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.a.property('success').eql(false);
+          res.body.should.have.a.property('message');
+          res.body.message.should.be.a('string');
+          done();
+        })
     });
     
   });
@@ -509,6 +656,7 @@ describe('Orders', () => {
           done();
         });
     });
+
   });
 });
 

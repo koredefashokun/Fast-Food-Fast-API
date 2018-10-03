@@ -13,15 +13,15 @@ router.post('/login', async (req, res) => {
     email: 'admin@fastfoodfast.com',
     password: 'admin123'
   }
-  if (!email) {
+  if (!email && typeof email !== 'string') {
     res.status(400).json({
       success: false,
-      message: 'Please enter your email address!'
+      message: 'Please enter your email address! (Hint: email must be a string!)'
     });
   } else if (!password) {
     res.status(400).json({
       success: false,
-      message: 'Please enter your password!'
+      message: 'Please enter your password! (Hint: password must be a string!)'
     })
   } else if (!isValidEmail(email)) {
     res.status(400).json({

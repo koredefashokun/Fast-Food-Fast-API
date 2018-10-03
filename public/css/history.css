@@ -78,3 +78,34 @@ td {
 .action-button-completed {
   background-color: #50a51f;
 }
+.create-menu-item-form {
+  width: 90%;
+  margin-bottom: 70px;
+  margin-top: 20px;
+}
+h1 {
+  margin-top: 10px;
+}
+.create-menu-item-form input {
+  width: 350px;
+  height: 35px;
+  border: 0.5px solid #000000;
+  font-family: Dank Mono;
+  font-size: 20px;
+  margin-bottom: 10px;
+  padding-left: 10px;
+}
+.create-menu-item-form button {
+  width: 200px;
+  height: 35px;
+  border: 0.3px solid #000000;
+  color: #000000;
+  background-color: rgb(209, 110, 110);
+  font-family: Dank Mono;
+  font-size: 20px;
+}
+.create-menu-item-form button:hover {
+  border: 0.5px solid rgb(209, 110, 110);
+  color: rgb(209, 110, 110);
+  background-color: #FFFFFF;
+}

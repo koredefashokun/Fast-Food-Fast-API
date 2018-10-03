@@ -63,7 +63,7 @@ router.post('/', authMiddleware, async (req, res) => {
   const values = [
     id,
     item,
-    quantity,
+    parseInt(quantity),
     'New',
     new Date(),
     new Date()

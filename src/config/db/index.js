@@ -1,8 +1,13 @@
 import pg, { Pool } from 'pg';
 import dotenv from 'dotenv';
-pg.defaults.ssl = true;
 
 dotenv.load();
+
+if (process.env.NODE_ENV == 'test' || process.env.NODE_ENV == 'development') {
+  pg.defaults.ssl = false;
+} else {
+  pg.defaults.ssl = true;
+}
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL
