@@ -8,7 +8,7 @@ Fast-Food-Fast is a service for ordering food.
 ### Routes
 
 #### GET /orders
-Function: Fetches a list of orders from the database.
+Function: Fetches a list of orders from the database. Can only be carried out by admins.
 Sample response:
 ```json
 {
@@ -16,22 +16,24 @@ Sample response:
   "orders": [
     {
       "id": 1,
+      "user_id": 2,
       "item": "Frech fries",
       "quantity": 2,
-      "completed": true
+      "status": "Processing"
     },
     {
       "id": 2,
+      "user_id": 3,
       "item": "Chicken Burrito",
       "quantity": 3,
-      "completed": false
+      "status": "New"
     }
   ]
 }
 ```
 
 #### POST /orders
-Function: Creates a new order, and adds it to the database.
+Function: Creates a new order, and adds it to the database. Can only be carried out by logged in users.
 Sample request:
 ```json
 {
@@ -45,24 +47,26 @@ Sample response:
   "success": true,
   "order": {
     "id": 1,
+    "user_id": 5,
     "item": "Fried Rice and Chicken",
     "quantity": 3,
-    "completed": false
+    "status": "Cancelled "
   }
 }
 ```
 
 #### GET /orders/:orderId
-Function: Gets the order associated with the given id.
+Function: Gets the order associated with the given id. Can only be carried out by admin.
 Sample response:
 ```json
 {
   "success": true,
   "order": {
     "id": 4,
+    "user_id": 1,
     "item": "Large Cheeseburger",
     "quantity": 2,
-    "completed": true
+    "status": "Completed"
   }
 }
 ```
@@ -72,7 +76,7 @@ Function: Updates the status of an order
 Sample request:
 ```json
 {
-  "completed": true
+  "status": "Processing"
 }
 ```
 Sample response:
@@ -81,12 +85,31 @@ Sample response:
   "success": true,
   "order": {
     "id": 2,
+    "user_id": 6,
     "item": "Chicken wings",
     "quantity": 4,
-    "completed": true
+    "status": "Processing"
   }
 }
 ```
+
+#### GET /menu
+Function: Gets the menu
+Sample response:
+```json
+{
+  "success": true,
+  "menu": [
+    {
+      "id": 2,
+      "name": "Rice and beans",
+      "description": "A very nice meal",
+      "image_url": "https://example.com/image"
+    }
+  ]
+}
+```
+
 
 ## Installation and Setup
 To install the app simply run:
