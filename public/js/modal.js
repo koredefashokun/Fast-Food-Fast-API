@@ -1,6 +1,6 @@
 window.onload = () => {
 	let modal = document.querySelector('.modal');
-	let trigger = document.getElementById('.order-button');
+	let trigger = document.querySelector('.order-button');
 	let closeButton = document.querySelector('.close-button');
 
 	const toggleModal = () => {
