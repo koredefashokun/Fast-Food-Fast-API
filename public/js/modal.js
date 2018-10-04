@@ -1,4 +1,4 @@
-window.onload = () => {
+window.onclick = (e) => {
 	let modal = document.querySelector('.modal');
 	let trigger = document.querySelector('.order-button');
 	let closeButton = document.querySelector('.close-button');
@@ -13,8 +13,9 @@ window.onload = () => {
 			toggleModal();
 		}
 	}
-
-	trigger.addEventListener('click', toggleModal);
-	closeButton.addEventListener('click', toggleModal);
+	
+	if(e.target === 'button.order-button'){
+		toggleModal();
+	}
 	window.addEventListener('click', windowOnClick);
 }
