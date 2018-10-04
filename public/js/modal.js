@@ -1,7 +1,7 @@
 window.onload = () => {
 	let modal = document.querySelector('.modal');
 	let closeButton = document.querySelector('.close-button');
-	let orderButton = document.querySelector('.order-button');
+	let orderButtons = document.querySelectorAll('.order-button');
 	const toggleModal = () => {
 		modal.classList.toggle('show-modal');
 	}
@@ -12,6 +12,9 @@ window.onload = () => {
 		}
 	}
 
-	orderButton.onclick = () => toggleModal();
+	orderButtons.forEach(orderButton => {
+		orderButton.onclick = () => toggleModal();
+	});
+	
 	window.addEventListener('click', windowOnClick);
 }
