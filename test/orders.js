@@ -1,9 +1,9 @@
-process.env.NODE_ENV = 'test';
 import 'babel-polyfill';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 
 import app from '../src/app';
+import db from '../src/config/db';
 
 chai.use(chaiHttp);
 const should = chai.should();
@@ -13,7 +13,7 @@ describe('Orders', () => {
   describe('GET /api/v1/orders', () => {
     let token;
 
-    beforeEach((done) => {
+    before((done) => {
       chai.request(app)
         .post('/api/v1/admin/login')
         .send({
@@ -40,8 +40,16 @@ describe('Orders', () => {
   });
 
   describe('POST /api/v1/orders', () => {
-
+    afterEach((done) => {
+      Promise.all([
+        db.query('DELETE FROM users;'),
+        db.query('DELETE FROM orders')
+      ]);
+      done();
+    });
+    
     let token;
+    
     beforeEach((done) => {
       chai.request(app)
         .post('/api/v1/auth/signup')
@@ -62,6 +70,7 @@ describe('Orders', () => {
         item: 'Chicken and Chips',
         quantity: 2
       }
+      
       chai.request(app)
         .post('/api/v1/orders')
         .send(order)
@@ -71,12 +80,15 @@ describe('Orders', () => {
           res.body.should.be.a('object');
           done();
         });
+      
     });
 
     it('Should not create a new order without required fields', (done) => {
+      
       const order = {
         quantity: 2
       }
+      
       chai.request(app)
         .post('/api/v1/orders')
         .set('Authorization', `Bearer ${token}`)
@@ -122,7 +134,7 @@ describe('Orders', () => {
           userToken = res.body.token;
           done();
         });
-    })
+    });
 
     before((done) => {
       chai.request(app)
@@ -135,8 +147,16 @@ describe('Orders', () => {
         .end((err, res) => {
           id = res.body.order.id;
           done();
-        })
-    })
+        });
+    });
+
+    after((done) => {
+      Promise.all([
+        db.query('DELETE FROM users;'),
+        db.query('DELETE FROM orders')
+      ]);
+      done();
+    });
 
     it('Should get order by specified id', (done) => {
       chai.request(app)
@@ -188,7 +208,7 @@ describe('Orders', () => {
           userToken = res.body.token;
           done();
         });
-    })
+    });
 
     before((done) => {
       chai.request(app)
@@ -201,8 +221,16 @@ describe('Orders', () => {
         .end((err, res) => {
           id = res.body.order.id;
           done();
-        })
-    })
+        });
+    });
+
+    after((done) => {
+      Promise.all([
+        db.query('DELETE FROM users;'),
+        db.query('DELETE * FROM orders;')
+      ]);
+      done();
+    });
 
     it('Should be able to update order status', (done) => {
       chai.request(app)
@@ -222,9 +250,18 @@ describe('Orders', () => {
     });
 
   });
+
   describe('POST /api/v1/auth/signup', () => {
 
     it('Should create a user with provided credentials', (done) => {
+      after((done) => {
+        Promise.all([
+          db.query('DELETE FROM users;'),
+          db.query('DELETE FROM orders')
+        ]);
+        done();
+      });
+      
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
@@ -238,10 +275,27 @@ describe('Orders', () => {
           res.body.should.have.a.property('success').eql(true);
           res.body.token.should.be.a('string');
           done();
-        })
+        });
     });
 
     it('Should not create a user without correct credentials', (done) => {
+      before((done) => {
+        chai.request(app)
+          .post('/api/v1/auth/signup')
+          .send({
+            name: 'Mr. Test',
+            email: 'testing123@gmail.com',
+            password: 'test123',
+            confirmPassword: 'test123'
+          })
+          .end((err, res) => {
+            res.body.should.be.a('object');
+            res.body.should.have.a.property('success').eql(true);
+            res.body.token.should.be.a('string');
+            done();
+          });
+      });
+
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
@@ -253,11 +307,34 @@ describe('Orders', () => {
           res.body.should.be.a('object');
           res.body.should.have.a.property('success').eql(false);
           done();
-        })
+        });
     });
 
   });
+  
   describe('POST /api/v1/auth/login', () => {
+
+    before((done) => {
+      chai.request(app)
+        .post('/api/v1/auth/signup')
+        .send({
+          name: 'Mr. Test',
+          email: 'testing123@gmail.com',
+          password: 'test123',
+          confirmPassword: 'test123'
+        })
+        .end(() => {
+          done();
+        });
+    });
+
+    after((done) => {
+      Promise.all([
+        db.query('DELETE FROM users;'),
+        db.query('DELETE FROM orders')
+      ]);
+      done();
+    });
 
     it('Should log in a user with correct credentials', (done) => {
       chai.request(app)
@@ -271,7 +348,7 @@ describe('Orders', () => {
           res.body.should.have.a.property('success').eql(true);
           res.body.token.should.be.a('string');
           done();
-        })
+        });
     });
 
     it('Should not log in a user without required credentials', (done) => {
@@ -285,13 +362,126 @@ describe('Orders', () => {
           res.body.should.be.a('object');
           res.body.should.have.a.property('success').eql(false);
           done();
-        })
+        });
     });
 
   });
 
-  describe('GET /api/v1/menu', () => {
+  describe('POST /api/v1/admin/login', () => {
 
+    it('Should login an admin with valid credentials', (done) => {
+      chai.request(app)
+        .post('/api/v1/admin/login')
+        .send({
+          email: 'admin@fastfoodfast.com',
+          password: 'admin123'
+        })
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.have.property('success').eql(true);
+          res.body.should.have.property('token');
+          res.body.token.should.be.a('string');
+          done();
+        })
+    });
+
+    it('Should not login an admin with incorrect email', (done) => {
+      chai.request(app)
+        .post('/api/v1/admin/login')
+        .send({
+          email: 'fake-email@fastfoodfast.com',
+          password: 'admin123'
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.property('success').eql(false);
+          res.body.should.have.property('message');
+          res.body.message.should.be.a('string');
+          done();
+        });
+    });
+
+    it('Should not login an admin with incorrect password', (done) => {
+      chai.request(app)
+        .post('/api/v1/admin/login')
+        .send({
+          email: 'admin123@fastfoodfast.com',
+          password: 'FakePassword'
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.property('success').eql(false);
+          res.body.should.have.property('message');
+          res.body.message.should.be.a('string');
+          done();
+        });
+    });
+
+    it('Should not login an admin with invalid password', (done) => {
+      chai.request(app)
+        .post('/api/v1/admin/login')
+        .send({
+          email: 'admin123@fastfoodfast.com',
+          password: 23
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.property('success').eql(false);
+          res.body.should.have.property('message');
+          res.body.message.should.be.a('string');
+          done();
+        });
+    });
+
+    it('Should not login an admin with invalid email', (done) => {
+      chai.request(app)
+        .post('/api/v1/admin/login')
+        .send({
+          email: 24,
+          password: 'FakePassword'
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.property('success').eql(false);
+          res.body.should.have.property('message');
+          res.body.message.should.be.a('string');
+          done();
+        });
+    });
+
+    it('Should not login an admin with empty email field', (done) => {
+      chai.request(app)
+        .post('/api/v1/admin/login')
+        .send({
+          password: 'FakePassword'
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.property('success').eql(false);
+          res.body.should.have.property('message');
+          res.body.message.should.be.a('string');
+          done();
+        });
+    });
+
+    it('Should not login an admin with empty password field', (done) => {
+      chai.request(app)
+        .post('/api/v1/admin/login')
+        .send({
+          email: 'fake-email@fastfoodfast.com'
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.property('success').eql(false);
+          res.body.should.have.property('message');
+          res.body.message.should.be.a('string');
+          done();
+        });
+    });
+
+  })
+
+  describe('POST /api/v1/menu', () => {
     let adminToken;
 
     before((done) => {
@@ -305,7 +495,12 @@ describe('Orders', () => {
           adminToken = res.body.token;
           done();
         });
-    })
+    });
+
+    after((done) => {
+      db.query('DELETE FROM menu;');
+      done();
+    });
 
     it('Should create a new menu item', (done) => {
       chai.request(app)
@@ -317,15 +512,81 @@ describe('Orders', () => {
           imageUrl: 'https://facebook.com'
         })
         .end((err, res) => {
-          res.should.have.status(200);
+          res.should.have.status(201);
           res.body.should.have.a.property('success').eql(true);
           res.body.should.have.a.property('item');
           res.body.item.should.have.a.property('name').eql('Rice');
           res.body.item.should.have.a.property('description').eql('Lorem ipsum dolor sit amet.');
           res.body.item.should.have.a.property('image_url').eql('https://facebook.com');
           done();
+        });
+    });
+
+    it('Should not create a new menu item without name field', (done) => {
+      chai.request(app)
+        .post('/api/v1/menu')
+        .set('Authorization', `Admin ${adminToken}`)
+        .send({
+          description: 'Lorem ipsum dolor sit amet.',
+          imageUrl: 'https://facebook.com'
         })
-    })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.a.property('success').eql(false);
+          res.body.should.have.a.property('message');
+          res.body.message.should.be.a('string');
+          done();
+        })
+    });
+
+    it('Should not create a new menu item without description field', (done) => {
+      chai.request(app)
+        .post('/api/v1/menu')
+        .set('Authorization', `Admin ${adminToken}`)
+        .send({
+          name: 'Rice',
+          imageUrl: 'https://facebook.com'
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.have.a.property('success').eql(false);
+          res.body.should.have.a.property('message');
+          res.body.message.should.be.a('string');
+          done();
+        })
+    });
+    
+  });
+
+  describe('GET /api/v1/menu', () => {
+    let adminToken;
+
+    before((done) => {
+      chai.request(app)
+        .post('/api/v1/admin/login')
+        .send({
+          email: 'admin@fastfoodfast.com',
+          password: 'admin123'
+        })
+        .end((err, res) => {
+          adminToken = res.body.token;
+          done();
+        });
+    });
+
+    before((done) => {
+      chai.request(app)
+        .post('/api/v1/menu')
+        .set('Authorization', `Admin ${adminToken}`)
+        .send({
+          name: 'Rice',
+          description: 'Lorem ipsum dolor sit amet.',
+          imageUrl: 'https://facebook.com'
+        })
+        .end(() => {
+          done();
+        });
+    });
 
     it('Should get the items on the menu', (done) => {
       chai.request(app)
@@ -336,10 +597,9 @@ describe('Orders', () => {
           res.body.should.have.a.property('menu');
           res.body.menu.should.be.a('array');
           done();
-        })
+        });
     });
-
-  })
+  });
 
   describe('GET /api/v1/users/:userId/orders', () => {
 
@@ -363,20 +623,28 @@ describe('Orders', () => {
     });
 
     before((done) => {
+      
       const order = {
         item: 'Chicken and Chips',
         quantity: 2
       }
+      
       chai.request(app)
         .post('/api/v1/orders')
         .send(order)
         .set('Authorization', `Bearer ${token}`)
         .end((err, res) => {
-          res.should.have.status(201);
-          res.body.should.be.a('object');
           done();
         });
-    })
+    });
+
+    after((done) => {
+      Promise.all([
+        db.query('DELETE FROM users;'),
+        db.query('DELETE FROM orders')
+      ]);
+      done();
+    });
 
     it('Should get the orders made by the specified user', (done) => {
       chai.request(app)
@@ -387,6 +655,8 @@ describe('Orders', () => {
           res.body.orders.should.be.a('array');
           done();
         });
-    })
-  })
+    });
+
+  });
 });
+
