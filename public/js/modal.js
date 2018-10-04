@@ -4,7 +4,6 @@ window.onclick = (e) => {
 
 	const toggleModal = () => {
 		modal.classList.toggle('show-modal');
-		console.log('pressed!');
 	}
 
 	const windowOnClick = () => {
