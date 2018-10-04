@@ -12,6 +12,6 @@ window.onload = () => {
 		}
 	}
 
-	orderButton.onclick = toggleModal();
+	orderButton.onclick = { () => toggleModal() };
 	window.addEventListener('click', windowOnClick);
 }
