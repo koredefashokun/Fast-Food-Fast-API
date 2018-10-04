@@ -1,6 +1,5 @@
 window.onclick = (e) => {
 	let modal = document.querySelector('.modal');
-	let trigger = document.querySelector('.order-button');
 	let closeButton = document.querySelector('.close-button');
 
 	const toggleModal = () => {
@@ -17,5 +16,5 @@ window.onclick = (e) => {
 	if(e.target === 'button.order-button'){
 		toggleModal();
 	}
-	window.addEventListener('click', windowOnClick);
 }
+window.addEventListener('click', windowOnClick);
