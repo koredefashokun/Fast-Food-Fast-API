@@ -39,6 +39,10 @@
   height: 40px;
   display: block;
   color: #000000;
+  margin-top: 15px;
+}
+.form-button a:visited {
+  color: #FFFFFF;
 }
 .form-container .form-support-link:hover {
   text-decoration: underline;
