@@ -37,6 +37,7 @@
   text-decoration: none;
   width: 400px;
   height: 40px;
+  display: block;
 }
 .form-container .form-support-link:hover {
   text-decoration: underline;
