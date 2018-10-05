@@ -17,7 +17,6 @@ window.onload = async () => {
 		}
 	});
 	const data = await response.json();
-	console.log(data);
 	if (data.success) {
 		const orders = data.orders;
 		orders.forEach(order => {
@@ -85,14 +84,12 @@ window.onload = async () => {
 					imageUrl: menuItemImageUrl
 				})
 			});
-			console.log(response);
 			const data = await response.json();
-			console.log(data);
 			if (data.success) {
 				location.reload();
 			}
 		} catch (e) {
-			if (!e.includes('Failed to fetch')) alert(e);
+			alert(e);
 		}
 	}
 }

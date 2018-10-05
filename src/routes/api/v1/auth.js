@@ -3,38 +3,31 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 import db from '../../../config/db';
+import { testNoEmptyString, noSpaceStrings, isValidEmail, comparePasswords } from '../../../helpers/validation';
 
 const router = new Router();
 
-const isValidEmail = (email) => {
-  return /\S+@\S+\.\S+/.test(email);
-}
-
-const comparePasswords = (password, hash) => {
-  return bcrypt.compare(password, hash);
-}
-
 router.post('/signup', async (req, res) => {
   const { name, email, password, confirmPassword } = req.body;
-  if (!name || typeof name != 'string') {
+  if (!name || typeof name != 'string' || !testNoEmptyString(name)) {
     res.status(400).json({
       success: false,
-      message: 'Please enter your full name! (Hint: name must be a string)'
+      message: 'Please enter your full name! (Hint: name must be a non-empty string)'
     });
-  } else if (!email || typeof email !== 'string') {
+  } else if (!email || typeof email !== 'string' || !testNoEmptyString(email)) {
     res.status(400).json({
       success: false,
       message: 'Please enter your email address! (Hint: email must be a string)'
     });
-  } else if (!password || typeof password !== 'string') {
+  } else if (!password || typeof password !== 'string' || !testNoEmptyString(password)) {
     res.status(400).json({
       success: false,
-      message: 'Please enter a password to be created! (Hint password must be a string)'
+      message: 'Please enter a password to be created! (Hint: password must be a non-empty string)'
     });
-  } else if (!confirmPassword || typeof confirmPassword !== 'string') {
+  } else if (!confirmPassword || typeof confirmPassword !== 'string' || !testNoEmptyString(confirmPassword)) {
     res.status(400).json({
       success: false,
-      message: 'Please enter password confirmation! (Hint confirmPassword must be a string)'
+      message: 'Please enter password confirmation! (Hint: confirmPassword must be a non-empty string)'
     });
   } else if (!isValidEmail(email)) {
     res.status(400).json({
@@ -74,7 +67,7 @@ router.post('/signup', async (req, res) => {
     });
   } catch (error) {
     if (error.routine === '_bt_check_unique') {
-      res.status(400).send({
+      res.status(409).send({
         success: false,
         message: 'User previously registered with given email.'
       });
@@ -89,16 +82,16 @@ router.post('/signup', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  if (!email || typeof email !== 'string') {
+  if (!email || typeof email !== 'string' || !testNoEmptyString(email)) {
     res.status(400).json({
       success: false,
-      message: 'Please enter your email correctly! (Hint: email must be a string)'
+      message: 'Please enter your email correctly! (Hint: email must be a non-empty string)'
     });
   }
-  if (!password || typeof password !== 'string') {
+  if (!password || typeof password !== 'string' || !testNoEmptyString(password)) {
     res.status(400).json({
       success: false,
-      message: 'Please enter your password correctly! (Hint: password must be a string)'
+      message: 'Please enter your password correctly! (Hint: password must be a non-empty string)'
     });
   } else if (!isValidEmail(email)) {
     res.status(400).json({
@@ -114,8 +107,7 @@ router.post('/login', async (req, res) => {
         success: false,
         message: 'No users found with the provided credentials.'
       });
-    }
-    if (!comparePasswords(password, rows[0].password)) {
+    } else if (!comparePasswords(password, rows[0].password)) {
       res.status(400).send({
         success: false,
         message: 'Incorrect password!'

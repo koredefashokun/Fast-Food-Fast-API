@@ -4,6 +4,7 @@ const router = new Router();
 import db from '../../../config/db';
 
 import { adminMiddleware, authMiddleware } from '../../../middleware';
+import { isValidId, noEmptyString } from '../../../helpers/validation';
 
 router.get('/', adminMiddleware, async (req, res) => {
   const query = 'SELECT * FROM orders';
@@ -24,6 +25,12 @@ router.get('/', adminMiddleware, async (req, res) => {
 
 router.get('/:orderId', adminMiddleware, async (req, res) => {
   const { orderId } = req.params;
+  if (!isValidId(orderId)) {
+    return res.status(400).json({
+      success: false,
+      message: 'Please make sure that the entered id is an integer.'
+    });
+  }
   const text = 'SELECT * FROM orders WHERE id = $1';
   try {
     const { rows } = await db.query(text, [orderId]);
@@ -53,10 +60,10 @@ router.post('/', authMiddleware, async (req, res) => {
       success: false,
       message: 'Please enter order item correctly (Hint: Item must be a string)'
     });
-  } else if (!quantity || typeof parseInt(quantity) !== 'number') {
+  } else if (!quantity || typeof parseInt(quantity) !== 'number' || parseInt(quantity) > 20) {
     res.status(400).json({
       success: false,
-      message: 'Please enter order item correctly (Hint: Quantity must be a number)'
+      message: 'Please enter order item correctly (Hint: Quantity must be a number that is less than or equal to 20)'
     });
   }
   const query = `INSERT INTO orders(user_id, item, quantity, status, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6) returning *`;

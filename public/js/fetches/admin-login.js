@@ -5,7 +5,6 @@ window.onload = () => {
 	form.onsubmit = async () => {
 		const email = document.querySelector('#admin-login-email').value;
 		const password = document.querySelector('#admin-login-password').value;
-		console.log(email, password);
 		try {
 			const response = await fetch(`${API_URL}`, {
 				method: 'POST',
@@ -19,7 +18,6 @@ window.onload = () => {
 				})
 			});
 			const data = await response.json();
-			console.log(data);
 			if (data.success) {
 				await localStorage.setItem('@FastFoodFast:admin-token', data.token);
 				location.href = '/admin-manager';

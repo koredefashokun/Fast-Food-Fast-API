@@ -9,7 +9,6 @@ window.onload = async () => {
 	const table = document.querySelector('#table');
 	try {
 		const response = await fetch(`${API_URL}/${userId}/orders`);
-		console.log(response);
 		const data = await response.json();
 		const orders = data.orders;
 		orders.forEach(order => {

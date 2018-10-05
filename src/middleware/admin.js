@@ -3,9 +3,9 @@ import jwt from 'jsonwebtoken';
 const auth = async (req, res, next) => {
   let token = req.headers['authorization'];
   if (!token) {
-    res.status(400).json({
+    res.status(401).json({
       success: false,
-      message: 'No token provided!'
+      message: 'No token provided! (Unauthorized)'
     });
   }
   let realToken = await token.split(' ')[1];
@@ -16,6 +16,11 @@ const auth = async (req, res, next) => {
         success: false,
         message: 'Invalid token supplied!'
       });
+    } else if (decoded.role !== 'admin') {
+      res.status(403).json({
+        success: false,
+        message: 'You are forbidden access to this route!'
+      })
     } else {
       req.decoded = decoded;
       next();

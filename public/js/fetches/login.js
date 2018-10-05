@@ -26,7 +26,6 @@ window.onload = () => {
 				});
 				const data = await response.json();
 				if (data.success) {
-					console.log(data);
 					await localStorage.setItem('@FastFoodFast:token', data.token);
 					await localStorage.setItem('@FastFoodFast:name', data.name);
 					await localStorage.setItem('@FastFoodFast:id', data.id)
@@ -38,7 +37,6 @@ window.onload = () => {
 		}
 
 		e.preventDefault();
-		await console.log(emailValue, passwordValue);
 		await logIn(emailValue, passwordValue);
 	}
 }
