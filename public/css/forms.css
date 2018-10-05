@@ -35,8 +35,8 @@
 }
 .form-button a {
   text-decoration: none;
-  width: 100%;
-  height: 100%;
+  width: 400px;
+  height: 40px;
 }
 .form-container .form-support-link:hover {
   text-decoration: underline;
