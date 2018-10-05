@@ -87,7 +87,6 @@ window.onload = async () => {
 						})
 					});
 					const data = response.json();
-					console.log(data);
 				} catch (e) {
 					alert(e);
 				}

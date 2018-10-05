@@ -47,7 +47,7 @@ app.get('/admin-login', (req, res) => {
 
 app.use('/', routes);
 
-app.get('*', (req, res) => {
+app.all('*', (req, res) => {
   return res.status(404).json({
     success: false,
     message: 'This route does not exist! Please read the documentation for the full list of the existing ones!'

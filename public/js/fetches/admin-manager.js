@@ -17,10 +17,8 @@ window.onload = async () => {
 		}
 	});
 	const data = await response.json();
-	console.log(data);
 	if (data.success) {
 		const orders = data.orders;
-		console.log(orders);
 		orders.forEach(order => {
 			const item = `
 				<tr>
@@ -87,7 +85,6 @@ window.onload = async () => {
 				})
 			});
 			const data = await response.json();
-			console.log(data);
 			if (data.success) {
 				location.reload();
 			}

@@ -10,7 +10,6 @@ router.get('/', adminMiddleware, async (req, res) => {
   const query = 'SELECT * FROM orders';
   try {
     const { rows: orders } = await db.query(query);
-    console.log('done');
     res.status(200).json({
       success: true,
       orders
