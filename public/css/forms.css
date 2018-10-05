@@ -38,6 +38,7 @@
   width: 400px;
   height: 40px;
   display: block;
+  color: #000000;
 }
 .form-container .form-support-link:hover {
   text-decoration: underline;
