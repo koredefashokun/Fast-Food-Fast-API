@@ -38,12 +38,6 @@
   width: 100%;
   height: 100%;
 }
-.form-container .form-button a:hover {
-  cursor: pointer;
-  background-color: #FFFFFF;
-  border: 0.2px solid rgb(209, 110, 110);
-  color: #000000;
-}
 .form-container .form-support-link:hover {
   text-decoration: underline;
   cursor: pointer;
