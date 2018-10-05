@@ -38,6 +38,9 @@
   width: 100%;
   height: 100%;
 }
+.form-button a:hover {
+  color: #000000;
+}
 .form-container .form-button:hover {
   cursor: pointer;
   background-color: #FFFFFF;
