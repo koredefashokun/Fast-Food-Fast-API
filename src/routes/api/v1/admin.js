@@ -1,24 +1,23 @@
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
 
-const router = new Router();
+import { isValidEmail, noEmptyString } from '../../../helpers/validation';
 
-const isValidEmail = (email) => {
-  return /\S+@\S+\.\S+/.test(email);
-}
+const router = new Router();
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   const credentials = {
     email: 'admin@fastfoodfast.com',
-    password: 'admin123'
+    password: 'admin123',
+    role: 'admin'
   }
-  if (!email && typeof email !== 'string') {
+  if (!email || typeof email !== 'string') {
     res.status(400).json({
       success: false,
       message: 'Please enter your email address! (Hint: email must be a string!)'
     });
-  } else if (!password) {
+  } else if (!password || typeof password !== 'string') {
     res.status(400).json({
       success: false,
       message: 'Please enter your password! (Hint: password must be a string!)'

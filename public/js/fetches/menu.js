@@ -1,6 +1,7 @@
 const API_URL = '/api/v1/menu';
 const API_URL_2 = '/api/v1/orders';
 window.onload = async () => {
+
 	const orderFoodContainer = document.querySelector('.order-food-container');
 	const welcomeMessage = document.querySelector('#welcome-message');
 	const userName = await localStorage.getItem('@FastFoodFast:name').split(' ')[0];
@@ -10,7 +11,6 @@ window.onload = async () => {
 		const data = await response.json();
 		const menu = data.menu;
 		menu.forEach(item => {
-			console.log(item);
 			const order = `
 				<div class="order-food-item">
 					<div class="order-food-item-image">
@@ -49,6 +49,22 @@ window.onload = async () => {
 		alert(e);
 	}
 	if (orderFoodContainer && orderFoodContainer.children.length > 2) {
+		const modal = document.querySelector('.modal');
+		const closeButton = document.querySelector('.close-button');
+
+		const toggleModal = () => {
+			modal.classList.toggle('show-modal');
+		}
+
+		const windowOnClick = () => {
+			if (event.target === modal) {
+				toggleModal();
+			}
+		}
+
+		closeButton.addEventListener('click', toggleModal);
+		window.addEventListener('click', windowOnClick);
+
 		const button = document.querySelector('#order-food-button');
 		button.onclick = async () => {
 			const token = localStorage.getItem('@FastFoodFast:token');
@@ -71,15 +87,14 @@ window.onload = async () => {
 						})
 					});
 					const data = response.json();
-					if (data.success) {
-						toggleModal();
-					}
+					console.log(data);
 				} catch (e) {
 					alert(e);
 				}
 			}
 			try {
 				await orderFood(token, name, quantity);
+				toggleModal();
 			} catch (e) {
 				alert(e);
 			}

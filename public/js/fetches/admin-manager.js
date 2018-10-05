@@ -20,6 +20,7 @@ window.onload = async () => {
 	console.log(data);
 	if (data.success) {
 		const orders = data.orders;
+		console.log(orders);
 		orders.forEach(order => {
 			const item = `
 				<tr>
@@ -85,14 +86,13 @@ window.onload = async () => {
 					imageUrl: menuItemImageUrl
 				})
 			});
-			console.log(response);
 			const data = await response.json();
 			console.log(data);
 			if (data.success) {
 				location.reload();
 			}
 		} catch (e) {
-			if (!e.includes('Failed to fetch')) alert(e);
+			alert(e);
 		}
 	}
 }

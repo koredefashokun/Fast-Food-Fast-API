@@ -2,8 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
-import morgan from 'morgan';
-import init from './config/db/init';
+import init from './config/db/models';
 
 import routes from './routes';
 
@@ -16,6 +15,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, '../public')));
+
+
+app.get('/', (req, res) => {
+  res.redirect('/login');
+});
 
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, '../UI/login.html'));
@@ -43,12 +47,17 @@ app.get('/admin-login', (req, res) => {
 
 app.use('/', routes);
 
+app.get('*', (req, res) => {
+  return res.status(404).json({
+    success: false,
+    message: 'This route does not exist! Please read the documentation for the full list of the existing ones!'
+  })
+})
+
 app.listen(port, async () => {
   await console.log(`Server started on port ${port}.`);
-  const connString = process.env.DATABASE_URL;
-  await init(connString)
-    .then(console.log('Connected to PostgresQL!'))
-    .catch(err => console.error(err));
+  await init(process.env.DATABASE_URL)
+    .then(console.log('Connected to PostgresQL!'));
 });
 
 

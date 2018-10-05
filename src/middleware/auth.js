@@ -5,7 +5,7 @@ const auth = async (req, res, next) => {
   if (!token) {
     res.status(400).json({
       success: false,
-      message: 'No token provided!'
+      message: 'No token provided! (Unauthorized)'
     });
   }
   let realToken = await token.split(' ')[1];
